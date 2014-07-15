@@ -1,0 +1,58 @@
+Script started on jeu 26 oct 2006 10:36:03 CEST
+
+$ openssl req -newkey rsa:1024 -keyout ClePriveeClientSupervCLIMSO.pem -out RequeteCertificatClientSupervCLIMSO.pem
+
+Generating a 1024 bit RSA private key
+......................++++++
+...........................................................................++++++
+writing new private key to 'ClePriveeClientSupervCLIMSO.pem'
+Enter PEM pass phrase:
+Verifying - Enter PEM pass phrase:
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [GB]:FR
+State or Province Name (full name) [Berkshire]:Midi-Pyrenees
+Locality Name (eg, city) [Newbury]:Pic-du-Midi
+Organization Name (eg, company) [My Company Ltd]:Observateurs Associes
+Organizational Unit Name (eg, section) []:SUPERVISEUR
+Common Name (eg, your name or your server's hostname) []:David Romeuf
+Email Address []:David.Romeuf@laposte.net
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+
+$ ls -l
+total
+-rw-r--r-- 1 dromeuf CLIMSO 963 oct 26 10:41 ClePriveeClientSupervCLIMSO.pem
+-rw-r--r-- 1 dromeuf CLIMSO   0 oct 26 10:36 lignes.txt
+-rw-r--r-- 1 dromeuf CLIMSO 753 oct 26 10:41 RequeteCertificatClientSupervCLIMSO.pem
+
+$ openssl ca -in ./RequeteCertificatClientSupervCLIMSO.pem -out ./CertificatClientSupervCLIMSO.pem -config /etc/ssl/CA_OA/openssl.cnf
+
+Using configuration from /etc/ssl/CA_OA/openssl.cnf
+Error opening CA private key /etc/ssl/CA_OA/private/ClePriveeCA_OA.pem
+
+Certificate is to be certified until Oct 25 08:49:35 2011 GMT (1825 days)
+Sign the certificate? [y/n]:y
+
+
+1 out of 1 certificate requests certified, commit? [y/n]y
+Write out database with 1 new entries
+Data Base Updated
+
+# ls -l
+total 16
+-rw-r--r-- 1 root    root   3952 oct 26 10:49 CertificatClientSupervCLIMSO.pem
+-rw-r--r-- 1 dromeuf CLIMSO  963 oct 26 10:41 ClePriveeClientSupervCLIMSO.pem
+-rw-r--r-- 1 dromeuf CLIMSO 4096 oct 26 10:49 lignes.txt
+-rw-r--r-- 1 dromeuf CLIMSO  753 oct 26 10:41 RequeteCertificatClientSupervCLIMSO.pem
+
+Script done on jeu 26 oct 2006 10:53:27 CEST
