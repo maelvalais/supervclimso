@@ -7710,14 +7710,24 @@ int SupervCLIMSO::SauverImageFITS(int n,QString &ncf)
 
 	// Ajout des contacts
 	//
-	if( fits_write_key(Id,TSTRING,(char *) "CONTACT",(char *) "noens@ast.obs-mip.fr",(char *) "e-mail's contact",&status) )
+	//mail contact retouche
+	if( fits_write_key(Id,TSTRING,(char *) "CONTACT",(char *) "laurent.lastname@irap.omp.eu",(char *) "rebuild e-mail's contact : L.Koechlin",&status) )
 	{
 		fits_get_errstatus(status,ceFITS);
 		fits_close_file(Id,&status);
 		Log("*** ERREUR FITS:"+QString(ceFITS)+": SupervCLIMSO: SauverImageFITS(): Impossible d'ajouter le mot clé du contact dans le fichier:"+NomFichierComplet+" ***");
 		return false;
 	}
-	if( fits_write_key(Id,TSTRING,(char *) "CONTACT1",(char *) "David.Romeuf@laposte.net",(char *) "e-mail's contact",&status) )
+	//mail contact1 retouche
+	if( fits_write_key(Id,TSTRING,(char *) "CONTACT1",(char *) "m-lastname@wanadoo.fr",(char *) "rebuild e-mail's contact : M.Audejean",&status) )
+	{
+		fits_get_errstatus(status,ceFITS);
+		fits_close_file(Id,&status);
+		Log("*** ERREUR FITS:"+QString(ceFITS)+": SupervCLIMSO: SauverImageFITS(): Impossible d'ajouter le mot clé du contact dans le fichier:"+NomFichierComplet+" ***");
+		return false;
+	}
+	//mail contact2 retouche
+	if( fits_write_key(Id,TSTRING,(char *) "CONTACT2",(char *) "Jacques-clair.lastname@wanadoo.fr",(char *) "rebuild e-mail's contact : J.-C. Noens END ",&status) )
 	{
 		fits_get_errstatus(status,ceFITS);
 		fits_close_file(Id,&status);
@@ -12426,4 +12436,3 @@ void ProcessusLegerListeAcquisitionsL2::run()
 
 
 #include "supervclimso.moc.cpp"
-
