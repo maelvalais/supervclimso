@@ -12435,4 +12435,4 @@ void ProcessusLegerListeAcquisitionsL2::run()
 }
 
 
-#include "supervclimso.moc.cpp"
+// #include "supervclimso.moc.cpp" XXX Ce fichier est maintenant inclus lors de la compilation

@@ -5,7 +5,8 @@ supervclimso-calculsastronomiques.o: calculsastronomiques.cpp \
  /usr/include/bits/huge_val.h /usr/include/bits/huge_valf.h \
  /usr/include/bits/huge_vall.h /usr/include/bits/inf.h \
  /usr/include/bits/nan.h /usr/include/bits/mathdef.h \
- /usr/include/bits/mathcalls.h calculsastronomiques.h
+ /usr/include/bits/mathcalls.h /usr/include/bits/mathinline.h \
+ calculsastronomiques.h
 
 /usr/include/stdc-predef.h:
 
@@ -34,5 +35,7 @@ supervclimso-calculsastronomiques.o: calculsastronomiques.cpp \
 /usr/include/bits/mathdef.h:
 
 /usr/include/bits/mathcalls.h:
+
+/usr/include/bits/mathinline.h:
 
 calculsastronomiques.h:

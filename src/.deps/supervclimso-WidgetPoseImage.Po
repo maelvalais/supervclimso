@@ -14,7 +14,8 @@ supervclimso-WidgetPoseImage.o: WidgetPoseImage.cpp \
  /usr/lib/gcc/i686-redhat-linux/4.8.3/include/stdarg.h \
  /usr/include/bits/wchar.h \
  /usr/lib/gcc/i686-redhat-linux/4.8.3/include/stddef.h \
- /usr/include/xlocale.h /usr/include/c++/4.8.3/exception \
+ /usr/include/xlocale.h /usr/include/bits/wchar2.h \
+ /usr/include/c++/4.8.3/exception \
  /usr/include/c++/4.8.3/bits/atomic_lockfree_defines.h \
  /usr/include/c++/4.8.3/bits/char_traits.h \
  /usr/include/c++/4.8.3/bits/stl_algobase.h \
@@ -81,15 +82,16 @@ supervclimso-WidgetPoseImage.o: WidgetPoseImage.cpp \
  /usr/include/bits/huge_valf.h /usr/include/bits/huge_vall.h \
  /usr/include/bits/inf.h /usr/include/bits/nan.h \
  /usr/include/bits/mathdef.h /usr/include/bits/mathcalls.h \
- /usr/include/c++/4.8.3/algorithm /usr/include/c++/4.8.3/utility \
- /usr/include/c++/4.8.3/bits/stl_relops.h \
+ /usr/include/bits/mathinline.h /usr/include/c++/4.8.3/algorithm \
+ /usr/include/c++/4.8.3/utility /usr/include/c++/4.8.3/bits/stl_relops.h \
  /usr/include/c++/4.8.3/bits/stl_algo.h /usr/include/c++/4.8.3/cstdlib \
  /usr/include/stdlib.h /usr/include/bits/waitflags.h \
  /usr/include/bits/waitstatus.h /usr/include/sys/types.h \
  /usr/include/sys/select.h /usr/include/bits/select.h \
- /usr/include/bits/sigset.h /usr/include/sys/sysmacros.h \
- /usr/include/alloca.h /usr/include/bits/stdlib-float.h \
- /usr/include/c++/4.8.3/bits/algorithmfwd.h \
+ /usr/include/bits/sigset.h /usr/include/bits/select2.h \
+ /usr/include/sys/sysmacros.h /usr/include/alloca.h \
+ /usr/include/bits/stdlib-bsearch.h /usr/include/bits/stdlib-float.h \
+ /usr/include/bits/stdlib.h /usr/include/c++/4.8.3/bits/algorithmfwd.h \
  /usr/include/c++/4.8.3/bits/stl_heap.h \
  /usr/include/c++/4.8.3/bits/valarray_array.h \
  /usr/include/c++/4.8.3/bits/valarray_array.tcc \
@@ -100,51 +102,50 @@ supervclimso-WidgetPoseImage.o: WidgetPoseImage.cpp \
  /usr/include/c++/4.8.3/bits/gslice_array.h \
  /usr/include/c++/4.8.3/bits/mask_array.h \
  /usr/include/c++/4.8.3/bits/indirect_array.h \
- /usr/lib/qt-3.3/include/qfontmetrics.h /usr/lib/qt-3.3/include/qfont.h \
- /usr/lib/qt-3.3/include/qwindowdefs.h \
- /usr/lib/qt-3.3/include/qobjectdefs.h /usr/lib/qt-3.3/include/qglobal.h \
- /usr/lib/qt-3.3/include/qconfig.h /usr/lib/qt-3.3/include/qmodules.h \
- /usr/lib/qt-3.3/include/qfeatures.h /usr/lib/qt-3.3/include/qstring.h \
- /usr/lib/qt-3.3/include/qcstring.h /usr/lib/qt-3.3/include/qmemarray.h \
- /usr/lib/qt-3.3/include/qgarray.h /usr/lib/qt-3.3/include/qshared.h \
- /usr/lib/qt-3.3/include/qwinexport.h /usr/include/string.h \
+ /usr/lib/qt3/include/qfontmetrics.h /usr/lib/qt3/include/qfont.h \
+ /usr/lib/qt3/include/qwindowdefs.h /usr/lib/qt3/include/qobjectdefs.h \
+ /usr/lib/qt3/include/qglobal.h /usr/lib/qt3/include/qconfig.h \
+ /usr/lib/qt3/include/qmodules.h /usr/lib/qt3/include/qfeatures.h \
+ /usr/lib/qt3/include/qstring.h /usr/lib/qt3/include/qcstring.h \
+ /usr/lib/qt3/include/qmemarray.h /usr/lib/qt3/include/qgarray.h \
+ /usr/lib/qt3/include/qshared.h /usr/lib/qt3/include/qwinexport.h \
+ /usr/include/string.h /usr/include/bits/string3.h \
  /usr/lib/gcc/i686-redhat-linux/4.8.3/include/limits.h \
  /usr/lib/gcc/i686-redhat-linux/4.8.3/include/syslimits.h \
  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
  /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
  /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
- /usr/include/bits/stdio_lim.h /usr/lib/qt-3.3/include/qnamespace.h \
- /usr/lib/qt-3.3/include/qrect.h /usr/lib/qt-3.3/include/qsize.h \
- /usr/lib/qt-3.3/include/qpoint.h /usr/lib/qt-3.3/include/qsize.h \
- /usr/lib/qt-3.3/include/qpainter.h /usr/lib/qt-3.3/include/qcolor.h \
- /usr/lib/qt-3.3/include/qstringlist.h \
- /usr/lib/qt-3.3/include/qvaluelist.h /usr/lib/qt-3.3/include/qtl.h \
- /usr/lib/qt-3.3/include/qtextstream.h \
- /usr/lib/qt-3.3/include/qiodevice.h /usr/include/libio.h \
+ /usr/include/bits/stdio_lim.h /usr/lib/qt3/include/qnamespace.h \
+ /usr/lib/qt3/include/qrect.h /usr/lib/qt3/include/qsize.h \
+ /usr/lib/qt3/include/qpoint.h /usr/lib/qt3/include/qsize.h \
+ /usr/lib/qt3/include/qpainter.h /usr/lib/qt3/include/qcolor.h \
+ /usr/lib/qt3/include/qstringlist.h /usr/lib/qt3/include/qvaluelist.h \
+ /usr/lib/qt3/include/qtl.h /usr/lib/qt3/include/qtextstream.h \
+ /usr/lib/qt3/include/qiodevice.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/bits/sys_errlist.h \
- /usr/lib/qt-3.3/include/qdatastream.h /usr/include/c++/4.8.3/cstddef \
+ /usr/include/bits/stdio.h /usr/include/bits/stdio2.h \
+ /usr/lib/qt3/include/qdatastream.h /usr/include/c++/4.8.3/cstddef \
  /usr/include/c++/4.8.3/iterator \
  /usr/include/c++/4.8.3/bits/stream_iterator.h \
  /usr/include/c++/4.8.3/list /usr/include/c++/4.8.3/bits/stl_list.h \
- /usr/include/c++/4.8.3/bits/list.tcc /usr/lib/qt-3.3/include/qstrlist.h \
- /usr/lib/qt-3.3/include/qptrlist.h /usr/lib/qt-3.3/include/qglist.h \
- /usr/lib/qt-3.3/include/qptrcollection.h \
- /usr/lib/qt-3.3/include/qfontmetrics.h \
- /usr/lib/qt-3.3/include/qfontinfo.h /usr/lib/qt-3.3/include/qregion.h \
- /usr/lib/qt-3.3/include/qpen.h /usr/lib/qt-3.3/include/qbrush.h \
- /usr/lib/qt-3.3/include/qpointarray.h /usr/lib/qt-3.3/include/qwmatrix.h \
- /usr/lib/qt-3.3/include/qpen.h /usr/lib/qt-3.3/include/qpixmap.h \
- /usr/lib/qt-3.3/include/qpaintdevice.h /usr/lib/qt-3.3/include/qbrush.h \
- /usr/lib/qt-3.3/include/qwmatrix.h WidgetPoseImage.h \
- /usr/lib/qt-3.3/include/qcolor.h /usr/lib/qt-3.3/include/qdatetime.h \
- /usr/lib/qt-3.3/include/qstring.h /usr/lib/qt-3.3/include/qwidget.h \
- /usr/lib/qt-3.3/include/qobject.h /usr/lib/qt-3.3/include/qevent.h \
- /usr/lib/qt-3.3/include/qmime.h /usr/lib/qt-3.3/include/qmap.h \
- /usr/lib/qt-3.3/include/qpair.h /usr/include/c++/4.8.3/map \
- /usr/include/c++/4.8.3/bits/stl_tree.h \
+ /usr/include/c++/4.8.3/bits/list.tcc /usr/lib/qt3/include/qstrlist.h \
+ /usr/lib/qt3/include/qptrlist.h /usr/lib/qt3/include/qglist.h \
+ /usr/lib/qt3/include/qptrcollection.h \
+ /usr/lib/qt3/include/qfontmetrics.h /usr/lib/qt3/include/qfontinfo.h \
+ /usr/lib/qt3/include/qregion.h /usr/lib/qt3/include/qpen.h \
+ /usr/lib/qt3/include/qbrush.h /usr/lib/qt3/include/qpointarray.h \
+ /usr/lib/qt3/include/qwmatrix.h /usr/lib/qt3/include/qpen.h \
+ /usr/lib/qt3/include/qpixmap.h /usr/lib/qt3/include/qpaintdevice.h \
+ /usr/lib/qt3/include/qbrush.h /usr/lib/qt3/include/qwmatrix.h \
+ WidgetPoseImage.h /usr/lib/qt3/include/qcolor.h \
+ /usr/lib/qt3/include/qdatetime.h /usr/lib/qt3/include/qstring.h \
+ /usr/lib/qt3/include/qwidget.h /usr/lib/qt3/include/qobject.h \
+ /usr/lib/qt3/include/qevent.h /usr/lib/qt3/include/qmime.h \
+ /usr/lib/qt3/include/qmap.h /usr/lib/qt3/include/qpair.h \
+ /usr/include/c++/4.8.3/map /usr/include/c++/4.8.3/bits/stl_tree.h \
  /usr/include/c++/4.8.3/bits/stl_map.h \
  /usr/include/c++/4.8.3/bits/stl_multimap.h \
- /usr/lib/qt-3.3/include/qpalette.h /usr/lib/qt-3.3/include/qsizepolicy.h
+ /usr/lib/qt3/include/qpalette.h /usr/lib/qt3/include/qsizepolicy.h
 
 /usr/include/stdc-predef.h:
 
@@ -191,6 +192,8 @@ supervclimso-WidgetPoseImage.o: WidgetPoseImage.cpp \
 /usr/lib/gcc/i686-redhat-linux/4.8.3/include/stddef.h:
 
 /usr/include/xlocale.h:
+
+/usr/include/bits/wchar2.h:
 
 /usr/include/c++/4.8.3/exception:
 
@@ -366,6 +369,8 @@ supervclimso-WidgetPoseImage.o: WidgetPoseImage.cpp \
 
 /usr/include/bits/mathcalls.h:
 
+/usr/include/bits/mathinline.h:
+
 /usr/include/c++/4.8.3/algorithm:
 
 /usr/include/c++/4.8.3/utility:
@@ -390,11 +395,17 @@ supervclimso-WidgetPoseImage.o: WidgetPoseImage.cpp \
 
 /usr/include/bits/sigset.h:
 
+/usr/include/bits/select2.h:
+
 /usr/include/sys/sysmacros.h:
 
 /usr/include/alloca.h:
 
+/usr/include/bits/stdlib-bsearch.h:
+
 /usr/include/bits/stdlib-float.h:
+
+/usr/include/bits/stdlib.h:
 
 /usr/include/c++/4.8.3/bits/algorithmfwd.h:
 
@@ -418,35 +429,37 @@ supervclimso-WidgetPoseImage.o: WidgetPoseImage.cpp \
 
 /usr/include/c++/4.8.3/bits/indirect_array.h:
 
-/usr/lib/qt-3.3/include/qfontmetrics.h:
+/usr/lib/qt3/include/qfontmetrics.h:
 
-/usr/lib/qt-3.3/include/qfont.h:
+/usr/lib/qt3/include/qfont.h:
 
-/usr/lib/qt-3.3/include/qwindowdefs.h:
+/usr/lib/qt3/include/qwindowdefs.h:
 
-/usr/lib/qt-3.3/include/qobjectdefs.h:
+/usr/lib/qt3/include/qobjectdefs.h:
 
-/usr/lib/qt-3.3/include/qglobal.h:
+/usr/lib/qt3/include/qglobal.h:
 
-/usr/lib/qt-3.3/include/qconfig.h:
+/usr/lib/qt3/include/qconfig.h:
 
-/usr/lib/qt-3.3/include/qmodules.h:
+/usr/lib/qt3/include/qmodules.h:
 
-/usr/lib/qt-3.3/include/qfeatures.h:
+/usr/lib/qt3/include/qfeatures.h:
 
-/usr/lib/qt-3.3/include/qstring.h:
+/usr/lib/qt3/include/qstring.h:
 
-/usr/lib/qt-3.3/include/qcstring.h:
+/usr/lib/qt3/include/qcstring.h:
 
-/usr/lib/qt-3.3/include/qmemarray.h:
+/usr/lib/qt3/include/qmemarray.h:
 
-/usr/lib/qt-3.3/include/qgarray.h:
+/usr/lib/qt3/include/qgarray.h:
 
-/usr/lib/qt-3.3/include/qshared.h:
+/usr/lib/qt3/include/qshared.h:
 
-/usr/lib/qt-3.3/include/qwinexport.h:
+/usr/lib/qt3/include/qwinexport.h:
 
 /usr/include/string.h:
+
+/usr/include/bits/string3.h:
 
 /usr/lib/gcc/i686-redhat-linux/4.8.3/include/limits.h:
 
@@ -466,29 +479,29 @@ supervclimso-WidgetPoseImage.o: WidgetPoseImage.cpp \
 
 /usr/include/bits/stdio_lim.h:
 
-/usr/lib/qt-3.3/include/qnamespace.h:
+/usr/lib/qt3/include/qnamespace.h:
 
-/usr/lib/qt-3.3/include/qrect.h:
+/usr/lib/qt3/include/qrect.h:
 
-/usr/lib/qt-3.3/include/qsize.h:
+/usr/lib/qt3/include/qsize.h:
 
-/usr/lib/qt-3.3/include/qpoint.h:
+/usr/lib/qt3/include/qpoint.h:
 
-/usr/lib/qt-3.3/include/qsize.h:
+/usr/lib/qt3/include/qsize.h:
 
-/usr/lib/qt-3.3/include/qpainter.h:
+/usr/lib/qt3/include/qpainter.h:
 
-/usr/lib/qt-3.3/include/qcolor.h:
+/usr/lib/qt3/include/qcolor.h:
 
-/usr/lib/qt-3.3/include/qstringlist.h:
+/usr/lib/qt3/include/qstringlist.h:
 
-/usr/lib/qt-3.3/include/qvaluelist.h:
+/usr/lib/qt3/include/qvaluelist.h:
 
-/usr/lib/qt-3.3/include/qtl.h:
+/usr/lib/qt3/include/qtl.h:
 
-/usr/lib/qt-3.3/include/qtextstream.h:
+/usr/lib/qt3/include/qtextstream.h:
 
-/usr/lib/qt-3.3/include/qiodevice.h:
+/usr/lib/qt3/include/qiodevice.h:
 
 /usr/include/libio.h:
 
@@ -496,7 +509,11 @@ supervclimso-WidgetPoseImage.o: WidgetPoseImage.cpp \
 
 /usr/include/bits/sys_errlist.h:
 
-/usr/lib/qt-3.3/include/qdatastream.h:
+/usr/include/bits/stdio.h:
+
+/usr/include/bits/stdio2.h:
+
+/usr/lib/qt3/include/qdatastream.h:
 
 /usr/include/c++/4.8.3/cstddef:
 
@@ -510,57 +527,57 @@ supervclimso-WidgetPoseImage.o: WidgetPoseImage.cpp \
 
 /usr/include/c++/4.8.3/bits/list.tcc:
 
-/usr/lib/qt-3.3/include/qstrlist.h:
+/usr/lib/qt3/include/qstrlist.h:
 
-/usr/lib/qt-3.3/include/qptrlist.h:
+/usr/lib/qt3/include/qptrlist.h:
 
-/usr/lib/qt-3.3/include/qglist.h:
+/usr/lib/qt3/include/qglist.h:
 
-/usr/lib/qt-3.3/include/qptrcollection.h:
+/usr/lib/qt3/include/qptrcollection.h:
 
-/usr/lib/qt-3.3/include/qfontmetrics.h:
+/usr/lib/qt3/include/qfontmetrics.h:
 
-/usr/lib/qt-3.3/include/qfontinfo.h:
+/usr/lib/qt3/include/qfontinfo.h:
 
-/usr/lib/qt-3.3/include/qregion.h:
+/usr/lib/qt3/include/qregion.h:
 
-/usr/lib/qt-3.3/include/qpen.h:
+/usr/lib/qt3/include/qpen.h:
 
-/usr/lib/qt-3.3/include/qbrush.h:
+/usr/lib/qt3/include/qbrush.h:
 
-/usr/lib/qt-3.3/include/qpointarray.h:
+/usr/lib/qt3/include/qpointarray.h:
 
-/usr/lib/qt-3.3/include/qwmatrix.h:
+/usr/lib/qt3/include/qwmatrix.h:
 
-/usr/lib/qt-3.3/include/qpen.h:
+/usr/lib/qt3/include/qpen.h:
 
-/usr/lib/qt-3.3/include/qpixmap.h:
+/usr/lib/qt3/include/qpixmap.h:
 
-/usr/lib/qt-3.3/include/qpaintdevice.h:
+/usr/lib/qt3/include/qpaintdevice.h:
 
-/usr/lib/qt-3.3/include/qbrush.h:
+/usr/lib/qt3/include/qbrush.h:
 
-/usr/lib/qt-3.3/include/qwmatrix.h:
+/usr/lib/qt3/include/qwmatrix.h:
 
 WidgetPoseImage.h:
 
-/usr/lib/qt-3.3/include/qcolor.h:
+/usr/lib/qt3/include/qcolor.h:
 
-/usr/lib/qt-3.3/include/qdatetime.h:
+/usr/lib/qt3/include/qdatetime.h:
 
-/usr/lib/qt-3.3/include/qstring.h:
+/usr/lib/qt3/include/qstring.h:
 
-/usr/lib/qt-3.3/include/qwidget.h:
+/usr/lib/qt3/include/qwidget.h:
 
-/usr/lib/qt-3.3/include/qobject.h:
+/usr/lib/qt3/include/qobject.h:
 
-/usr/lib/qt-3.3/include/qevent.h:
+/usr/lib/qt3/include/qevent.h:
 
-/usr/lib/qt-3.3/include/qmime.h:
+/usr/lib/qt3/include/qmime.h:
 
-/usr/lib/qt-3.3/include/qmap.h:
+/usr/lib/qt3/include/qmap.h:
 
-/usr/lib/qt-3.3/include/qpair.h:
+/usr/lib/qt3/include/qpair.h:
 
 /usr/include/c++/4.8.3/map:
 
@@ -570,6 +587,6 @@ WidgetPoseImage.h:
 
 /usr/include/c++/4.8.3/bits/stl_multimap.h:
 
-/usr/lib/qt-3.3/include/qpalette.h:
+/usr/lib/qt3/include/qpalette.h:
 
-/usr/lib/qt-3.3/include/qsizepolicy.h:
+/usr/lib/qt3/include/qsizepolicy.h:

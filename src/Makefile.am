@@ -36,16 +36,17 @@ supervclimso_SOURCES = \
 		main.cpp supervclimso.cpp pointscomm.cpp \
 		WidgetPoseCentrage.cpp WidgetPoseImage.cpp calculsastronomiques.cpp \
 		WidgetSoleilHeliographique.cpp WidgetRoueOuvertureCLIMSO.cpp WidgetRoueFiltresC2.cpp\
-		WidgetSoleilHeliographique.moc.cpp WidgetRoueOuvertureCLIMSO.moc.cpp WidgetRoueFiltresC2.moc.cpp\
-		WidgetPoseCentrage.moc.cpp WidgetPoseImage.moc.cpp\
-		supervclimso.moc.cpp
+		$(BUILT_SOURCES)
 
 # -Ox correspond au mode d'optimisation. -O2 est une bonne optimisation.
 # -O0 désactive l'optimisation  	
 
-supervclimso_CPPFLAGS = -I/usr/include/kde
-supervclimso_LDFLAGS = $(KDE_RPATH) $(all_libraries) -L/usr/lib/kde
-supervclimso_LDADD = -lcfitsio -lssl $(LIB_KDEUI) -lcrypto
+supervclimso_CXXFLAGS = $(QT_CXXFLAGS) $(AM_CXXFLAGS)
+supervclimso_CFLAGS = $(QT_CFLAGS) $(AM_CFLAGS)
+supervclimso_CPPFLAGS = $(QT_CPPFLAGS) $(AM_CPPFLAGS) -I/usr/include/kde
+supervclimso_LDFLAGS = $(QT_LDFLAGS) $(LDFLAGS) -L/usr/lib/kde
+supervclimso_LDADD = $(QT_LIBS) $(LDADD) -lcfitsio -lssl -lcrypto -lkde3support
+
 
 # Fichiers qui devront être compilés par uic ou moc avant la compilation
 # Voir CONCERNANT Qt au dessus

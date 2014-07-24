@@ -75,28 +75,25 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = i686-redhat-linux-gnu
-host_triplet = i686-redhat-linux-gnu
-target_triplet = i686-redhat-linux-gnu
+build_triplet = i686-pc-linux-gnu
+host_triplet = i686-pc-linux-gnu
 subdir = .
-DIST_COMMON = INSTALL NEWS README AUTHORS ChangeLog \
-	$(srcdir)/Makefile.in $(srcdir)/Makefile.am \
+DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
-	$(srcdir)/config.h.in $(top_srcdir)/admin/mkinstalldirs \
-	$(top_srcdir)/admin/ltmain.sh $(top_srcdir)/admin/config.guess \
-	$(top_srcdir)/admin/config.sub COPYING admin/ChangeLog TODO \
-	admin/compile admin/config.guess admin/config.sub \
-	admin/depcomp admin/install-sh admin/missing \
-	admin/mkinstalldirs admin/ylwrap admin/ltmain.sh \
-	$(top_srcdir)/admin/install-sh $(top_srcdir)/admin/missing
+	$(srcdir)/config.h.in AUTHORS COPYING ChangeLog NEWS README \
+	config/config.guess config/config.sub config/depcomp \
+	config/install-sh config/missing \
+	$(top_srcdir)/config/config.guess \
+	$(top_srcdir)/config/config.sub \
+	$(top_srcdir)/config/install-sh $(top_srcdir)/config/missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/m4/autotroll.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
-mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
+mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
@@ -199,207 +196,101 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = aclocal-1.13
+ACLOCAL = ${SHELL} /home/maelv/prog/supervclimso/config/missing aclocal-1.13
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
-AR = ar
-ARTSCCONFIG = /usr/bin/artsc-config
-AUTOCONF = $(SHELL) $(top_srcdir)/admin/cvs.sh configure || touch configure
-AUTODIRS = 
-AUTOHEADER = autoheader
-AUTOMAKE = automake-1.13
+AUTOCONF = ${SHELL} /home/maelv/prog/supervclimso/config/missing autoconf
+AUTOHEADER = ${SHELL} /home/maelv/prog/supervclimso/config/missing autoheader
+AUTOMAKE = ${SHELL} /home/maelv/prog/supervclimso/config/missing automake-1.13
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -ansi -W -Wall -Wchar-subscripts -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings -D_XOPEN_SOURCE=500 -D_BSD_SOURCE -O2   -Wformat-security -Wmissing-format-attribute
-CONF_FILES =  $(top_srcdir)/./admin/configure.in.min $(top_srcdir)/configure.in.in
+CFLAGS = -g -O2
 CPP = gcc -E
-CPPFLAGS =  -DQT_THREAD_SUPPORT -I/usr/include/cfitsio/ -D_REENTRANT
+CPPFLAGS = 
 CXX = g++
-CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -Wnon-virtual-dtor -Wno-long-long -Wundef -Wall -W -Wpointer-arith -Wwrite-strings -ansi -D_XOPEN_SOURCE=500 -D_BSD_SOURCE -Wcast-align -Wconversion -Wchar-subscripts -Wformat-security -Wmissing-format-attribute
+CXXFLAGS = -g -O2
 CYGPATH_W = echo
-DCOPIDL = /usr/bin/dcopidl
-DCOPIDL2CPP = /usr/bin/dcopidl2cpp
-DCOPIDLNG = /usr/bin/dcopidlng
-DCOP_DEPENDENCIES = $(DCOPIDL) $(DCOPIDLNG)
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
-ECHO = echo
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
 EGREP = /usr/bin/grep -E
 EXEEXT = 
-F77 = g77
-FFLAGS = -g -O2
-FRAMEWORK_COREAUDIO = 
-GMSGFMT = /usr/bin/msgfmt
 GREP = /usr/bin/grep
-INSTALL = /usr/bin/install -c -p
+INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
-INSTALL_PROGRAM = ${INSTALL} $(INSTALL_STRIP_FLAG)
+INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-KCFG_DEPENDENCIES = $(KCONFIG_COMPILER)
-KCONFIG_COMPILER = /usr/bin/kconfig_compiler
-KDECONFIG = /usr/bin/kde-config
-KDE_EXTRA_RPATH = 
-KDE_INCLUDES = -I/usr/include/kde
-KDE_LDFLAGS = -L/usr/lib
-KDE_MT_LDFLAGS = 
-KDE_MT_LIBS = -lpthread
-KDE_NO_UNDEFINED = -Wl,--no-undefined -Wl,--allow-shlib-undefined
-KDE_PLUGIN = -avoid-version -module -no-undefined $(KDE_NO_UNDEFINED) $(KDE_RPATH) $(KDE_MT_LDFLAGS)
-KDE_RPATH = -R $(kde_libraries) -R $(qt_libraries) -R $(x_libraries)
-KDE_USE_CLOSURE_FALSE = 
-KDE_USE_CLOSURE_TRUE = #
-KDE_USE_FINAL_FALSE = 
-KDE_USE_FINAL_TRUE = #
-KDE_USE_NMCHECK_FALSE = 
-KDE_USE_NMCHECK_TRUE = #
-KDE_XSL_STYLESHEET = /usr/share/apps/ksgmltools2/customization/kde-chunk.xsl
 LDFLAGS = 
-LIBCOMPAT = 
-LIBCRYPT = -lcrypt
-LIBDL = -ldl
-LIBJPEG = -ljpeg
 LIBOBJS = 
-LIBPNG = -lpng -lz -lm
-LIBPTHREAD = -lpthread
-LIBRESOLV = -lresolv
-LIBS = 
-LIBSM = -lSM -lICE
-LIBSOCKET = 
-LIBTOOL = $(SHELL) $(top_builddir)/libtool --silent
-LIBUCB = 
-LIBUTIL = -lutil
-LIBZ = -lz
-LIB_KAB = -lkab
-LIB_KABC = -lkabc
-LIB_KDECORE = -lkdecore
-LIB_KDEPIM = -lkdepim
-LIB_KDEPRINT = -lkdeprint
-LIB_KDEUI = -lkdeui
-LIB_KFILE = -lkio
-LIB_KFM = 
-LIB_KHTML = -lkhtml
-LIB_KIO = -lkio
-LIB_KPARTS = -lkparts
-LIB_KSPELL = -lkspell
-LIB_KSYCOCA = -lkio
-LIB_KUTILS = -lkutils
-LIB_POLL = 
-LIB_QPE = 
-LIB_QT = -lqt-mt  $(LIBZ) $(LIBPNG) -lXext $(LIB_X11) $(LIBSM) -lpthread
-LIB_SMB = -lsmb
-LIB_X11 = -lX11 $(LIBSOCKET)
-LIB_XEXT = -lXext
-LIB_XRENDER = 
-LN_S = ln -s
+LIBS = -lcfitsio -lm 
 LTLIBOBJS = 
-MAKEINFO = makeinfo
-MCOPIDL = /usr/bin/mcopidl
-MEINPROC = /usr/bin/meinproc
+MAKEINFO = ${SHELL} /home/maelv/prog/supervclimso/config/missing makeinfo
 MKDIR_P = /usr/bin/mkdir -p
-MOC = /usr/lib/qt-3.3/bin/moc
-MSGFMT = /usr/bin/msgfmt
-NOOPT_CFLAGS = -O0
-NOOPT_CXXFLAGS = -O0
+MOC = /usr/lib/qt3/bin/moc
 OBJEXT = o
 PACKAGE = supervclimso
 PACKAGE_BUGREPORT = 
-PACKAGE_NAME = 
-PACKAGE_STRING = 
-PACKAGE_TARNAME = 
+PACKAGE_NAME = supervclimso
+PACKAGE_STRING = supervclimso 0.2
+PACKAGE_TARNAME = supervclimso
 PACKAGE_URL = 
-PACKAGE_VERSION = 
+PACKAGE_VERSION = 0.2
 PATH_SEPARATOR = :
-PERL = /usr/bin/perl
-QTE_NORTTI = 
-QT_INCLUDES = -I/usr/lib/qt-3.3/include
-QT_LDFLAGS = -L/usr/lib/qt-3.3/lib
-RANLIB = ranlib
+QMAKE = /usr/lib/qt3/bin/qmake
+QT_CFLAGS = -pipe -Wall -W -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m32 -march=i686 -mtune=atom -fasynchronous-unwind-tables -fno-strict-aliasing  -DQT_NO_DEBUG -DQT_SHARED -DQT_TABLET_SUPPORT -DQT_THREAD_SUPPORT
+QT_CPPFLAGS =  -I/usr/lib/qt3/mkspecs/default -I. -I. -I$(QTDIR)/include
+QT_CXXFLAGS = -pipe -Wall -W -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m32 -march=i686 -mtune=atom -fasynchronous-unwind-tables -fno-strict-aliasing  -DQT_NO_DEBUG -DQT_SHARED -DQT_TABLET_SUPPORT -DQT_THREAD_SUPPORT
+QT_DEFINES = 
+QT_INCPATH = -I/usr/lib/qt3/mkspecs/default -I. -I. -I$(QTDIR)/include
+QT_LDFLAGS = 
+QT_LFLAGS = 
+QT_LIBS = -L$(QTDIR)/lib -lqt-mt -lXext -lX11 -lm
+QT_PATH = /usr/lib/qt3/bin
+QT_VERSION_MAJOR = ok, looks like Qt 3
+RCC = /usr/bin/rcc
 SET_MAKE = 
 SHELL = /bin/sh
-STRIP = strip
-TOPSUBDIRS =  src
-UIC = /usr/lib/qt-3.3/bin/uic -L $(kde_widgetdir) -nounload
-UIC_TR = tr2i18n
-USER_INCLUDES = 
-USER_LDFLAGS = 
-USE_EXCEPTIONS = 
-USE_RTTI = 
-USE_THREADS = 
-VERSION = 0.1
-WOVERLOADED_VIRTUAL = 
-XGETTEXT = /usr/bin/xgettext
-XMKMF = 
-XMLLINT = /usr/bin/xmllint
-X_EXTRA_LIBS = 
-X_INCLUDES = -I.
-X_LDFLAGS = -L/usr/lib
-X_PRE_LIBS = 
-X_RPATH = -R $(x_libraries)
+STRIP = 
+TMPDIR = /tmp
+UIC = /usr/lib/qt3/bin/uic
+VERSION = 0.2
 abs_builddir = /home/maelv/prog/supervclimso
 abs_srcdir = /home/maelv/prog/supervclimso
 abs_top_builddir = /home/maelv/prog/supervclimso
 abs_top_srcdir = /home/maelv/prog/supervclimso
 ac_ct_CC = gcc
 ac_ct_CXX = g++
-ac_ct_F77 = g77
-all_includes = -I/usr/include/kde -I/usr/lib/qt-3.3/include -I. 
-all_libraries = -L/usr/lib -L/usr/lib/qt-3.3/lib 
 am__include = include
 am__leading_dot = .
 am__quote = 
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = i686-redhat-linux-gnu
+build = i686-pc-linux-gnu
 build_alias = 
 build_cpu = i686
 build_os = linux-gnu
-build_vendor = redhat
+build_vendor = pc
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
-docdir = ${datarootdir}/doc/${PACKAGE}
+docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = i686-redhat-linux-gnu
+host = i686-pc-linux-gnu
 host_alias = 
 host_cpu = i686
 host_os = linux-gnu
-host_vendor = redhat
+host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/maelv/prog/supervclimso/admin/install-sh
-kde_appsdir = ${datadir}/applnk
-kde_bindir = ${exec_prefix}/bin
-kde_confdir = ${datadir}/config
-kde_datadir = ${datadir}/apps
-kde_htmldir = ${datadir}/doc/HTML
-kde_icondir = ${datadir}/icons
-kde_includes = /usr/include/kde
-kde_kcfgdir = ${datadir}/config.kcfg
-kde_libraries = /usr/lib
-kde_libs_htmldir = /usr/share/doc/HTML
-kde_libs_prefix = /usr
-kde_locale = ${datadir}/locale
-kde_mimedir = ${datadir}/mimelnk
-kde_moduledir = ${libdir}/kde3
-kde_qtver = 3
-kde_servicesdir = ${datadir}/services
-kde_servicetypesdir = ${datadir}/servicetypes
-kde_sounddir = ${datadir}/sounds
-kde_styledir = ${libdir}/kde3/plugins/styles
-kde_templatesdir = ${datadir}/templates
-kde_wallpaperdir = ${datadir}/wallpapers
-kde_widgetdir = /usr/lib/kde3/plugins/designer
-kdeinitdir = $(kde_moduledir)
+install_sh = ${SHELL} /home/maelv/prog/supervclimso/config/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -408,31 +299,18 @@ mandir = ${datarootdir}/man
 mkdir_p = $(MKDIR_P)
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /usr/local/kde
+prefix = /usr/local
 program_transform_name = s,x,x,
 psdir = ${docdir}
-qt_includes = /usr/lib/qt-3.3/include
-qt_libraries = /usr/lib/qt-3.3/lib
 sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
 srcdir = .
 sysconfdir = ${prefix}/etc
-target = i686-redhat-linux-gnu
 target_alias = 
-target_cpu = i686
-target_os = linux-gnu
-target_vendor = redhat
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
-x_includes = .
-x_libraries = /usr/lib
-xdg_appsdir = ${datadir}/applications/kde
-xdg_directorydir = ${datadir}/desktop-directories
-xdg_menudir = ${sysconfdir}/xdg/menus
-SUBDIRS = $(TOPSUBDIRS)
-MAINTAINERCLEANFILES = subdirs configure.in acinclude.m4 configure.files 
-EXTRA_DIST = admin COPYING configure.in.in
+SUBDIRS = src
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -443,15 +321,15 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
-	      echo ' cd $(srcdir) && $(AUTOMAKE) --gnu'; \
-	      $(am__cd) $(srcdir) && $(AUTOMAKE) --gnu \
+	      echo ' cd $(srcdir) && $(AUTOMAKE) --foreign'; \
+	      $(am__cd) $(srcdir) && $(AUTOMAKE) --foreign \
 		&& exit 0; \
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu Makefile
+	  $(AUTOMAKE) --foreign Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -486,15 +364,6 @@ $(srcdir)/config.h.in:  $(am__configure_deps)
 
 distclean-hdr:
 	-rm -f config.h stamp-h1
-
-mostlyclean-libtool:
-	-rm -f *.lo
-
-clean-libtool:
-	-rm -rf .libs _libs
-
-distclean-libtool:
-	-rm -f libtool config.lt
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run 'make' without going through this Makefile.
@@ -659,9 +528,6 @@ distdir: $(DISTFILES)
 	      || exit 1; \
 	  fi; \
 	done
-	$(MAKE) $(AM_MAKEFLAGS) \
-	  top_distdir="$(top_distdir)" distdir="$(distdir)" \
-	  dist-hook
 	-test -n "$(am__skip_mode_fix)" \
 	|| find "$(distdir)" -type d ! -perm -755 \
 		-exec chmod u+rwx,go+rx {} \; -o \
@@ -821,16 +687,14 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-recursive
 
-clean-am: clean-generic clean-libtool mostlyclean-am
+clean-am: clean-generic mostlyclean-am
 
 distclean: distclean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -f Makefile
-distclean-am: clean-am distclean-generic distclean-hdr \
-	distclean-libtool distclean-tags
+distclean-am: clean-am distclean-generic distclean-hdr distclean-tags
 
 dvi: dvi-recursive
 
@@ -880,7 +744,7 @@ maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-recursive
 
-mostlyclean-am: mostlyclean-generic mostlyclean-libtool
+mostlyclean-am: mostlyclean-generic
 
 pdf: pdf-recursive
 
@@ -896,10 +760,9 @@ uninstall-am:
 
 .PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am \
 	am--refresh check check-am clean clean-cscope clean-generic \
-	clean-libtool cscope cscopelist-am ctags ctags-am dist \
-	dist-all dist-bzip2 dist-gzip dist-hook dist-lzip dist-shar \
-	dist-tarZ dist-xz dist-zip distcheck distclean \
-	distclean-generic distclean-hdr distclean-libtool \
+	cscope cscopelist-am ctags ctags-am dist dist-all dist-bzip2 \
+	dist-gzip dist-lzip dist-shar dist-tarZ dist-xz dist-zip \
+	distcheck distclean distclean-generic distclean-hdr \
 	distclean-tags distcleancheck distdir distuninstallcheck dvi \
 	dvi-am html html-am info info-am install install-am \
 	install-data install-data-am install-dvi install-dvi-am \
@@ -908,26 +771,9 @@ uninstall-am:
 	install-pdf-am install-ps install-ps-am install-strip \
 	installcheck installcheck-am installdirs installdirs-am \
 	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am
+	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
+	uninstall-am
 
-
-$(top_srcdir)/configure.in: configure.in.in $(top_srcdir)/subdirs
-	cd $(top_srcdir) && $(MAKE) -f admin/Makefile.common configure.in ;
-
-$(top_srcdir)/subdirs:
-	cd $(top_srcdir) && $(MAKE) -f admin/Makefile.common subdirs
-
-$(top_srcdir)/acinclude.m4: $(top_srcdir)/admin/acinclude.m4.in $(top_srcdir)/admin/libtool.m4.in
-	@cd $(top_srcdir) && cat admin/acinclude.m4.in admin/libtool.m4.in > acinclude.m4
-
-package-messages:
-	cd $(top_srcdir) && $(MAKE) -f admin/Makefile.common package-messages
-	$(MAKE) -C po merge
-
-dist-hook:
-	cd $(top_distdir) && perl admin/am_edit -padmin
-	cd $(top_distdir) && $(MAKE) -f admin/Makefile.common subdirs
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

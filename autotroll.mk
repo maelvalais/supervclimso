@@ -35,25 +35,8 @@ SUFFIXES = .moc.cpp .moc.cc .moc.cxx .moc.C .h .hh \
 # MOC #
 # --- #
 
-.hh.moc.cpp:
-	$(MOC) $(QT_CPPFLAGS) $< -o $@
 .h.moc.cpp:
-	$(MOC) $(QT_CPPFLAGS) $< -o $@
-
-.hh.moc.cc:
-	$(MOC) $(QT_CPPFLAGS) $< -o $@
-.h.moc.cc:
-	$(MOC) $(QT_CPPFLAGS) $< -o $@
-
-.hh.moc.cxx:
-	$(MOC) $(QT_CPPFLAGS) $< -o $@
-.h.moc.cxx:
-	$(MOC) $(QT_CPPFLAGS) $< -o $@
-
-.hh.moc.C:
-	$(MOC) $(QT_CPPFLAGS) $< -o $@
-.h.moc.C:
-	$(MOC) $(QT_CPPFLAGS) $< -o $@
+	$(MOC) $< -o $@
 
 # --- #
 # UIC #

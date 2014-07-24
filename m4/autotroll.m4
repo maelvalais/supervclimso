@@ -296,10 +296,13 @@ instead" >&AS_MESSAGE_LOG_FD
   # It starts by removing the beginning of the line, removing references to
   # SUBLIBS, removing unnecessary whitespaces at the beginning, and prefixes
   # all variable uses by QT_.
+  #qt_sed_filter='s///;
+  #               s/$(SUBLIBS)//g;
+  #               s/^ *//;
+  #               s/\$(\(@<:@A-Z_@:>@@<:@A-Z_@:>@*\))/$(QT_\1)/g'
   qt_sed_filter='s///;
                  s/$(SUBLIBS)//g;
-                 s/^ *//;
-                 s/\$(\(@<:@A-Z_@:>@@<:@A-Z_@:>@*\))/$(QT_\1)/g'
+                 s/^ *//'
 
   # Find the Makefile (qmake happens to generate a fake Makefile which invokes
   # a Makefile.Debug or Makefile.Release). We we have both, we'll pick the
@@ -417,3 +420,6 @@ $at_mod"
   done
   echo "$qt_conf" | sed 1d >>"$pro_file"
 ])
+
+
+
