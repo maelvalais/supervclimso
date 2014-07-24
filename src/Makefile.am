@@ -44,8 +44,8 @@ supervclimso_SOURCES = \
 supervclimso_CXXFLAGS = $(QT_CXXFLAGS) $(AM_CXXFLAGS)
 supervclimso_CFLAGS = $(QT_CFLAGS) $(AM_CFLAGS)
 supervclimso_CPPFLAGS = $(QT_CPPFLAGS) $(AM_CPPFLAGS) -I/usr/include/kde
-supervclimso_LDFLAGS = $(QT_LDFLAGS) $(LDFLAGS) -L/usr/lib/kde
-supervclimso_LDADD = $(QT_LIBS) $(LDADD) -lcfitsio -lssl -lcrypto -lkde3support
+supervclimso_LDFLAGS = $(QT_LDFLAGS) $(LDFLAGS) 
+supervclimso_LDADD = $(QT_LIBS) $(LDADD) -lcfitsio -lssl -lcrypto -L/usr/lib/kde -lkdeui -lkdecore
 
 
 # Fichiers qui devront être compilés par uic ou moc avant la compilation
