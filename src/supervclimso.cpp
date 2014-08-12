@@ -3234,10 +3234,11 @@ void SupervCLIMSO::SlotPulsar1s(void)
 
 		// Si on vient de trouver l'index de la roue a filtre de C2 et que l'on a deja trouve l'index de la roue d'ouverture
 		//
-/*		AxeIndexTrouve[AXE_ROUE_FILTREC2]=true;
+		// XXX A commenter pour la recherche roue
+		AxeIndexTrouve[AXE_ROUE_FILTREC2]=true;
 		aFiltreC2=FiltreC2_NonInitialise;
 		FiltreC2=FiltreC2_10830;
-*/
+
 		if( AxeIndexTrouve[AXE_ROUE_FILTREC2] && (AxeRechIndexEnCours == AXE_ROUE_FILTREC2) )
 		{
 			// Le filtre actif n'est pas pas connu pour l'instant
@@ -3245,6 +3246,7 @@ void SupervCLIMSO::SlotPulsar1s(void)
 			aFiltreC2=FiltreC2_NonInitialise;
 			FiltreC2=FiltreC2_SansFiltre;
 
+// XXX A reactiver pour la la recherche roue
 /*			AxeRechIndexEnCours=AXE_PLATINE_X;
 			PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_PLATINE_X);
 */
@@ -3255,6 +3257,7 @@ void SupervCLIMSO::SlotPulsar1s(void)
 
 		// Si on vient de trouver la position HOME de l'axe X de la platine et que l'on a deja trouve l'index de la roue a filtre de C2
 		//
+// XXX A reactiver pour la recherche platine X
 /*		if( AxeIndexTrouve[AXE_PLATINE_X] && (AxeRechIndexEnCours == AXE_PLATINE_X) )
 		{
 			AxeRechIndexEnCours=AXE_PLATINE_Y;
@@ -3265,6 +3268,7 @@ void SupervCLIMSO::SlotPulsar1s(void)
 			MAJEtatBoutonsFP();
 		}
 */
+// XXX A reactiver pour la recherche platine Y
 		// Si on vient de trouver la position HOME de l'axe Y de la platine et que l'on a deja trouve la position HOME de la platine X
 		//
 /*		if( AxeIndexTrouve[AXE_PLATINE_Y] && (AxeRechIndexEnCours == AXE_PLATINE_Y) )
