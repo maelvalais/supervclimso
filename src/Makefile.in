@@ -14,6 +14,41 @@
 
 @SET_MAKE@
 
+# Makefile.am par Mael Valais - 2014
+# Nécessaire à automake
+
+# Ce fichier contient les noms des fichiers qui permettent la compilation Autotools
+
+# Les fichiers Makefile.am (vides) dans tous les sous-dossiers sont obligatoires mais
+# j'ai décidé de tout mettre dans celui-ci pour simplifier (grâce à subdir-objects dans 
+# configure.ac)
+
+# CONCERNANT Qt (à travers autotroll.m4 et autotroll.mk) : 
+# - include autotroll.mk permet d'ajouter les règles implicites pour compiler 
+#		les .ui en _ui.h, les .moc en .moc.cpp...
+# - BUILT_SOURCES= contient tous les fichiers .ui ou .moc ou .rcc qui devront être
+# 		compilés par les outils uic, moc ou rcc. Si on met mainwindow_ui.h dans
+#		prog_SOURCES par exemple, il faudra qu'on écrive : 
+#		BUILT_SOURCES=mainwindow_ui.h
+
+# Makerules.
+# This file is part of AutoTroll.
+# Copyright (C) 2006  Benoit Sigoure.
+#
+# AutoTroll is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+# USA.
 
 
 VPATH = @srcdir@
@@ -80,24 +115,28 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-target_triplet = @target@
+DIST_COMMON = $(srcdir)/../autotroll.mk $(srcdir)/Makefile.in \
+	$(srcdir)/Makefile.am $(top_srcdir)/config/depcomp \
+	$(noinst_HEADERS)
 bin_PROGRAMS = supervclimso$(EXEEXT)
 subdir = src
-DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
-	$(top_srcdir)/admin/mkinstalldirs $(top_srcdir)/admin/depcomp \
-	$(noinst_HEADERS)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/m4/autotroll.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-mkinstalldirs = $(SHELL) $(top_srcdir)/admin/mkinstalldirs
+mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(shelldesktopdir)" \
-	"$(DESTDIR)$(shellrcdir)"
+am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
+am__objects_1 = supervclimso-WidgetSoleilHeliographique.moc.$(OBJEXT) \
+	supervclimso-WidgetRoueOuvertureCLIMSO.moc.$(OBJEXT) \
+	supervclimso-WidgetRoueFiltresC2.moc.$(OBJEXT) \
+	supervclimso-WidgetPoseCentrage.moc.$(OBJEXT) \
+	supervclimso-WidgetPoseImage.moc.$(OBJEXT) \
+	supervclimso-supervclimso.moc.$(OBJEXT)
 am_supervclimso_OBJECTS = supervclimso-main.$(OBJEXT) \
 	supervclimso-supervclimso.$(OBJEXT) \
 	supervclimso-pointscomm.$(OBJEXT) \
@@ -106,22 +145,12 @@ am_supervclimso_OBJECTS = supervclimso-main.$(OBJEXT) \
 	supervclimso-calculsastronomiques.$(OBJEXT) \
 	supervclimso-WidgetSoleilHeliographique.$(OBJEXT) \
 	supervclimso-WidgetRoueOuvertureCLIMSO.$(OBJEXT) \
-	supervclimso-WidgetRoueFiltresC2.$(OBJEXT) \
-	supervclimso-WidgetSoleilHeliographique.moc.$(OBJEXT) \
-	supervclimso-WidgetRoueOuvertureCLIMSO.moc.$(OBJEXT) \
-	supervclimso-WidgetRoueFiltresC2.moc.$(OBJEXT) \
-	supervclimso-WidgetPoseCentrage.moc.$(OBJEXT) \
-	supervclimso-WidgetPoseImage.moc.$(OBJEXT)
+	supervclimso-WidgetRoueFiltresC2.$(OBJEXT) $(am__objects_1)
 supervclimso_OBJECTS = $(am_supervclimso_OBJECTS)
 am__DEPENDENCIES_1 =
 supervclimso_DEPENDENCIES = $(am__DEPENDENCIES_1)
-AM_V_lt = $(am__v_lt_@AM_V@)
-am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
-am__v_lt_0 = --silent
-am__v_lt_1 = 
-supervclimso_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
-	$(CXXFLAGS) $(supervclimso_LDFLAGS) $(LDFLAGS) -o $@
+supervclimso_LINK = $(CXXLD) $(supervclimso_CXXFLAGS) $(CXXFLAGS) \
+	$(supervclimso_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -135,23 +164,22 @@ am__v_at_ = $(am__v_at_@AM_DEFAULT_V@)
 am__v_at_0 = @
 am__v_at_1 = 
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
-depcomp = $(SHELL) $(top_srcdir)/admin/depcomp
+depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
+AM_V_lt = $(am__v_lt_@AM_V@)
+am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
+am__v_lt_0 = --silent
+am__v_lt_1 = 
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
-	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
-	$(AM_CXXFLAGS) $(CXXFLAGS)
 AM_V_CXX = $(am__v_CXX_@AM_V@)
 am__v_CXX_ = $(am__v_CXX_@AM_DEFAULT_V@)
 am__v_CXX_0 = @echo "  CXX     " $@;
 am__v_CXX_1 = 
 CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
-	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+	-o $@
 AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
@@ -163,34 +191,6 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
-am__install_max = 40
-am__nobase_strip_setup = \
-  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
-am__nobase_strip = \
-  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
-am__nobase_list = $(am__nobase_strip_setup); \
-  for p in $$list; do echo "$$p $$p"; done | \
-  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
-  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
-    if (++n[$$2] == $(am__install_max)) \
-      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
-    END { for (dir in files) print dir, files[dir] }'
-am__base_list = \
-  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
-  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__uninstall_files_from_dir = { \
-  test -z "$$files" \
-    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
-    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
-         $(am__cd) "$$dir" && rm -f $$files; }; \
-  }
-DATA = $(shelldesktop_DATA) $(shellrc_DATA)
 HEADERS = $(noinst_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -215,111 +215,39 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
-AR = @AR@
-ARTSCCONFIG = @ARTSCCONFIG@
 AUTOCONF = @AUTOCONF@
-AUTODIRS = @AUTODIRS@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
-CONF_FILES = @CONF_FILES@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
-CXXCPP = @CXXCPP@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
-DCOPIDL = @DCOPIDL@
-DCOPIDL2CPP = @DCOPIDL2CPP@
-DCOPIDLNG = @DCOPIDLNG@
-DCOP_DEPENDENCIES = @DCOP_DEPENDENCIES@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
-F77 = @F77@
-FFLAGS = @FFLAGS@
-FRAMEWORK_COREAUDIO = @FRAMEWORK_COREAUDIO@
-GMSGFMT = @GMSGFMT@
 GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-KCFG_DEPENDENCIES = @KCFG_DEPENDENCIES@
-KCONFIG_COMPILER = @KCONFIG_COMPILER@
-KDECONFIG = @KDECONFIG@
-KDE_EXTRA_RPATH = @KDE_EXTRA_RPATH@
-KDE_INCLUDES = @KDE_INCLUDES@
-KDE_LDFLAGS = @KDE_LDFLAGS@
-KDE_MT_LDFLAGS = @KDE_MT_LDFLAGS@
-KDE_MT_LIBS = @KDE_MT_LIBS@
-KDE_NO_UNDEFINED = @KDE_NO_UNDEFINED@
-KDE_PLUGIN = @KDE_PLUGIN@
-KDE_RPATH = @KDE_RPATH@
-KDE_USE_CLOSURE_FALSE = @KDE_USE_CLOSURE_FALSE@
-KDE_USE_CLOSURE_TRUE = @KDE_USE_CLOSURE_TRUE@
-KDE_USE_FINAL_FALSE = @KDE_USE_FINAL_FALSE@
-KDE_USE_FINAL_TRUE = @KDE_USE_FINAL_TRUE@
-KDE_USE_NMCHECK_FALSE = @KDE_USE_NMCHECK_FALSE@
-KDE_USE_NMCHECK_TRUE = @KDE_USE_NMCHECK_TRUE@
-KDE_XSL_STYLESHEET = @KDE_XSL_STYLESHEET@
 LDFLAGS = @LDFLAGS@
-LIBCOMPAT = @LIBCOMPAT@
-LIBCRYPT = @LIBCRYPT@
-LIBDL = @LIBDL@
-LIBJPEG = @LIBJPEG@
 LIBOBJS = @LIBOBJS@
-LIBPNG = @LIBPNG@
-LIBPTHREAD = @LIBPTHREAD@
-LIBRESOLV = @LIBRESOLV@
 LIBS = @LIBS@
-LIBSM = @LIBSM@
-LIBSOCKET = @LIBSOCKET@
-LIBTOOL = @LIBTOOL@
-LIBUCB = @LIBUCB@
-LIBUTIL = @LIBUTIL@
-LIBZ = @LIBZ@
-LIB_KAB = @LIB_KAB@
-LIB_KABC = @LIB_KABC@
-LIB_KDECORE = @LIB_KDECORE@
-LIB_KDEPIM = @LIB_KDEPIM@
-LIB_KDEPRINT = @LIB_KDEPRINT@
-LIB_KDEUI = @LIB_KDEUI@
-LIB_KFILE = @LIB_KFILE@
-LIB_KFM = @LIB_KFM@
-LIB_KHTML = @LIB_KHTML@
-LIB_KIO = @LIB_KIO@
-LIB_KPARTS = @LIB_KPARTS@
-LIB_KSPELL = @LIB_KSPELL@
-LIB_KSYCOCA = @LIB_KSYCOCA@
-LIB_KUTILS = @LIB_KUTILS@
-LIB_POLL = @LIB_POLL@
-LIB_QPE = @LIB_QPE@
-LIB_QT = @LIB_QT@
-LIB_SMB = @LIB_SMB@
-LIB_X11 = @LIB_X11@
-LIB_XEXT = @LIB_XEXT@
-LIB_XRENDER = @LIB_XRENDER@
-LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
-MCOPIDL = @MCOPIDL@
-MEINPROC = @MEINPROC@
 MKDIR_P = @MKDIR_P@
 MOC = @MOC@
-MSGFMT = @MSGFMT@
-NOOPT_CFLAGS = @NOOPT_CFLAGS@
-NOOPT_CXXFLAGS = @NOOPT_CXXFLAGS@
 OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
@@ -329,41 +257,30 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
-PERL = @PERL@
-QTE_NORTTI = @QTE_NORTTI@
-QT_INCLUDES = @QT_INCLUDES@
+QMAKE = @QMAKE@
+QT_CFLAGS = @QT_CFLAGS@
+QT_CPPFLAGS = @QT_CPPFLAGS@
+QT_CXXFLAGS = @QT_CXXFLAGS@
+QT_DEFINES = @QT_DEFINES@
+QT_INCPATH = @QT_INCPATH@
 QT_LDFLAGS = @QT_LDFLAGS@
-RANLIB = @RANLIB@
+QT_LFLAGS = @QT_LFLAGS@
+QT_LIBS = @QT_LIBS@
+QT_PATH = @QT_PATH@
+QT_VERSION_MAJOR = @QT_VERSION_MAJOR@
+RCC = @RCC@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
-TOPSUBDIRS = @TOPSUBDIRS@
+TMPDIR = @TMPDIR@
 UIC = @UIC@
-UIC_TR = @UIC_TR@
-USER_INCLUDES = @USER_INCLUDES@
-USER_LDFLAGS = @USER_LDFLAGS@
-USE_EXCEPTIONS = @USE_EXCEPTIONS@
-USE_RTTI = @USE_RTTI@
-USE_THREADS = @USE_THREADS@
 VERSION = @VERSION@
-WOVERLOADED_VIRTUAL = @WOVERLOADED_VIRTUAL@
-XGETTEXT = @XGETTEXT@
-XMKMF = @XMKMF@
-XMLLINT = @XMLLINT@
-X_EXTRA_LIBS = @X_EXTRA_LIBS@
-X_INCLUDES = @X_INCLUDES@
-X_LDFLAGS = @X_LDFLAGS@
-X_PRE_LIBS = @X_PRE_LIBS@
-X_RPATH = @X_RPATH@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
-ac_ct_F77 = @ac_ct_F77@
-all_includes = @all_includes@
-all_libraries = @all_libraries@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -390,29 +307,6 @@ htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
-kde_appsdir = @kde_appsdir@
-kde_bindir = @kde_bindir@
-kde_confdir = @kde_confdir@
-kde_datadir = @kde_datadir@
-kde_htmldir = @kde_htmldir@
-kde_icondir = @kde_icondir@
-kde_includes = @kde_includes@
-kde_kcfgdir = @kde_kcfgdir@
-kde_libraries = @kde_libraries@
-kde_libs_htmldir = @kde_libs_htmldir@
-kde_libs_prefix = @kde_libs_prefix@
-kde_locale = @kde_locale@
-kde_mimedir = @kde_mimedir@
-kde_moduledir = @kde_moduledir@
-kde_qtver = @kde_qtver@
-kde_servicesdir = @kde_servicesdir@
-kde_servicetypesdir = @kde_servicetypesdir@
-kde_sounddir = @kde_sounddir@
-kde_styledir = @kde_styledir@
-kde_templatesdir = @kde_templatesdir@
-kde_wallpaperdir = @kde_wallpaperdir@
-kde_widgetdir = @kde_widgetdir@
-kdeinitdir = @kdeinitdir@
 libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
@@ -424,64 +318,68 @@ pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
-qt_includes = @qt_includes@
-qt_libraries = @qt_libraries@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
-target = @target@
 target_alias = @target_alias@
-target_cpu = @target_cpu@
-target_os = @target_os@
-target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-x_includes = @x_includes@
-x_libraries = @x_libraries@
-xdg_appsdir = @xdg_appsdir@
-xdg_directorydir = @xdg_directorydir@
-xdg_menudir = @xdg_menudir@
 
-# set the include path for X, qt and KDE
-INCLUDES = $(all_includes)
+# See autotroll.m4 :)
 
-# these are the headers for your project
+#NOTE MV: Il s'agit de règles implicites avec double suffixe
+# .ui.ui.h: signifie %.ui: %.ui.h
+SUFFIXES = .moc.cpp .moc.cc .moc.cxx .moc.C .h .hh \
+           .ui .ui.h .ui.hh \
+           .qrc .qrc.cpp .qrc.cc .qrc.cxx .qrc.C\
+           _ui.h
+
+DISTCLEANFILES = $(BUILT_SOURCES)
+
+# Appel au makefile pour les moc, uic, rcc 
+# provenant de autotroll
+
+# Pour que aclocal puisse trouver les fichiers .m4
+ACLOCAL_AMFLAGS = -I ../m4
+
+# Les headers
 noinst_HEADERS = supervclimso.h pointscomm.h ListesCommandesReponsesCamerOA.h \
 	ListesCommandesReponsesTerminOA.h WidgetPoseCentrage.h WidgetPoseImage.h calculsastronomiques.h \
 	WidgetSoleilHeliographique.h WidgetRoueOuvertureCLIMSO.h WidgetRoueFiltresC2.h trameimagecameroa.h \
 	trameimageterminoa.h ListesCommandesReponsesRobOA.h
 
 
-# let automoc handle all of the meta source files (moc)
-METASOURCES = AUTO
-KDE_ICON = AUTO
-
-# the application source, library search path, and link libraries
+# Fichiers source (.c, .cpp, .h ou tout autre fichier utile aux étapes de compilation)
 supervclimso_SOURCES = \
 		main.cpp supervclimso.cpp pointscomm.cpp \
 		WidgetPoseCentrage.cpp WidgetPoseImage.cpp calculsastronomiques.cpp \
 		WidgetSoleilHeliographique.cpp WidgetRoueOuvertureCLIMSO.cpp WidgetRoueFiltresC2.cpp\
-		WidgetSoleilHeliographique.moc.cpp WidgetRoueOuvertureCLIMSO.moc.cpp WidgetRoueFiltresC2.moc.cpp\
-		WidgetPoseCentrage.moc.cpp WidgetPoseImage.moc.cpp
+		$(BUILT_SOURCES)
 
-supervclimso_CPPFLAGS = -I/usr/include/kde
-supervclimso_LDFLAGS = $(KDE_RPATH) $(all_libraries) -L/usr/lib/kde
-supervclimso_LDADD = -lcfitsio -lssl $(LIB_KDEUI) -lcrypto 
 
-# this is where the desktop file will go 
-shelldesktopdir = $(kde_appsdir)/Utilities
-shelldesktop_DATA = supervclimso.desktop
+# -Ox correspond au mode d'optimisation. -O2 est une bonne optimisation.
+# -O0 désactive l'optimisation  	
+supervclimso_CXXFLAGS = $(QT_CXXFLAGS) $(AM_CXXFLAGS)
+supervclimso_CFLAGS = $(QT_CFLAGS) $(AM_CFLAGS)
+supervclimso_CPPFLAGS = $(QT_CPPFLAGS) $(AM_CPPFLAGS) -I/usr/include/kde
+supervclimso_LDFLAGS = $(QT_LDFLAGS) $(LDFLAGS) 
+supervclimso_LDADD = $(QT_LIBS) $(LDADD) -lcfitsio -lssl -lcrypto -L/usr/lib/kde -lkdeui -lkdecore
 
-# this is where the shell's XML-GUI resource file goes
-shellrcdir = $(kde_datadir)/supervclimso
-shellrc_DATA = supervclimsoui.rc
-all: all-am
+# Fichiers qui devront être compilés par uic ou moc avant la compilation
+# Voir CONCERNANT Qt au dessus
+BUILT_SOURCES = \
+	WidgetSoleilHeliographique.moc.cpp WidgetRoueOuvertureCLIMSO.moc.cpp WidgetRoueFiltresC2.moc.cpp\
+	WidgetPoseCentrage.moc.cpp WidgetPoseImage.moc.cpp\
+	supervclimso.moc.cpp
+
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
-.SUFFIXES: .cpp .lo .o .obj
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
+.SUFFIXES: .moc.cpp .moc.cc .moc.cxx .moc.C .h .hh .ui .ui.h .ui.hh .qrc .qrc.cpp .qrc.cc .qrc.cxx .qrc.C _ui.h .cpp .o .obj
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(srcdir)/../autotroll.mk $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -490,9 +388,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu src/Makefile
+	  $(AUTOMAKE) --foreign src/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -502,6 +400,7 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)'; \
 	    cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe);; \
 	esac;
+$(srcdir)/../autotroll.mk:
 
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
@@ -521,7 +420,6 @@ install-binPROGRAMS: $(bin_PROGRAMS)
 	for p in $$list; do echo "$$p $$p"; done | \
 	sed 's/$(EXEEXT)$$//' | \
 	while read p p1; do if test -f $$p \
-	 || test -f $$p1 \
 	  ; then echo "$$p"; echo "$$p"; else :; fi; \
 	done | \
 	sed -e 'p;s,.*/,,;n;h' \
@@ -536,8 +434,8 @@ install-binPROGRAMS: $(bin_PROGRAMS)
 	while read type dir files; do \
 	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
 	    test -z "$$files" || { \
-	    echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
-	    $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
+	      echo " $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
+	      $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
 	    } \
 	; done
 
@@ -553,13 +451,7 @@ uninstall-binPROGRAMS:
 	cd "$(DESTDIR)$(bindir)" && rm -f $$files
 
 clean-binPROGRAMS:
-	@list='$(bin_PROGRAMS)'; test -n "$$list" || exit 0; \
-	echo " rm -f" $$list; \
-	rm -f $$list || exit $$?; \
-	test -n "$(EXEEXT)" || exit 0; \
-	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
-	echo " rm -f" $$list; \
-	rm -f $$list
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
 supervclimso$(EXEEXT): $(supervclimso_OBJECTS) $(supervclimso_DEPENDENCIES) $(EXTRA_supervclimso_DEPENDENCIES) 
 	@rm -f supervclimso$(EXEEXT)
@@ -585,271 +477,233 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/supervclimso-main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/supervclimso-pointscomm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/supervclimso-supervclimso.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/supervclimso-supervclimso.moc.Po@am__quote@
 
 .cpp.o:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
 
 .cpp.obj:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-.cpp.lo:
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
-
 supervclimso-main.o: main.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-main.o -MD -MP -MF $(DEPDIR)/supervclimso-main.Tpo -c -o supervclimso-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-main.o -MD -MP -MF $(DEPDIR)/supervclimso-main.Tpo -c -o supervclimso-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-main.Tpo $(DEPDIR)/supervclimso-main.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main.cpp' object='supervclimso-main.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
 
 supervclimso-main.obj: main.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-main.obj -MD -MP -MF $(DEPDIR)/supervclimso-main.Tpo -c -o supervclimso-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-main.obj -MD -MP -MF $(DEPDIR)/supervclimso-main.Tpo -c -o supervclimso-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-main.Tpo $(DEPDIR)/supervclimso-main.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main.cpp' object='supervclimso-main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
 
 supervclimso-supervclimso.o: supervclimso.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-supervclimso.o -MD -MP -MF $(DEPDIR)/supervclimso-supervclimso.Tpo -c -o supervclimso-supervclimso.o `test -f 'supervclimso.cpp' || echo '$(srcdir)/'`supervclimso.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-supervclimso.o -MD -MP -MF $(DEPDIR)/supervclimso-supervclimso.Tpo -c -o supervclimso-supervclimso.o `test -f 'supervclimso.cpp' || echo '$(srcdir)/'`supervclimso.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-supervclimso.Tpo $(DEPDIR)/supervclimso-supervclimso.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='supervclimso.cpp' object='supervclimso-supervclimso.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-supervclimso.o `test -f 'supervclimso.cpp' || echo '$(srcdir)/'`supervclimso.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-supervclimso.o `test -f 'supervclimso.cpp' || echo '$(srcdir)/'`supervclimso.cpp
 
 supervclimso-supervclimso.obj: supervclimso.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-supervclimso.obj -MD -MP -MF $(DEPDIR)/supervclimso-supervclimso.Tpo -c -o supervclimso-supervclimso.obj `if test -f 'supervclimso.cpp'; then $(CYGPATH_W) 'supervclimso.cpp'; else $(CYGPATH_W) '$(srcdir)/supervclimso.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-supervclimso.obj -MD -MP -MF $(DEPDIR)/supervclimso-supervclimso.Tpo -c -o supervclimso-supervclimso.obj `if test -f 'supervclimso.cpp'; then $(CYGPATH_W) 'supervclimso.cpp'; else $(CYGPATH_W) '$(srcdir)/supervclimso.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-supervclimso.Tpo $(DEPDIR)/supervclimso-supervclimso.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='supervclimso.cpp' object='supervclimso-supervclimso.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-supervclimso.obj `if test -f 'supervclimso.cpp'; then $(CYGPATH_W) 'supervclimso.cpp'; else $(CYGPATH_W) '$(srcdir)/supervclimso.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-supervclimso.obj `if test -f 'supervclimso.cpp'; then $(CYGPATH_W) 'supervclimso.cpp'; else $(CYGPATH_W) '$(srcdir)/supervclimso.cpp'; fi`
 
 supervclimso-pointscomm.o: pointscomm.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-pointscomm.o -MD -MP -MF $(DEPDIR)/supervclimso-pointscomm.Tpo -c -o supervclimso-pointscomm.o `test -f 'pointscomm.cpp' || echo '$(srcdir)/'`pointscomm.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-pointscomm.o -MD -MP -MF $(DEPDIR)/supervclimso-pointscomm.Tpo -c -o supervclimso-pointscomm.o `test -f 'pointscomm.cpp' || echo '$(srcdir)/'`pointscomm.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-pointscomm.Tpo $(DEPDIR)/supervclimso-pointscomm.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pointscomm.cpp' object='supervclimso-pointscomm.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-pointscomm.o `test -f 'pointscomm.cpp' || echo '$(srcdir)/'`pointscomm.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-pointscomm.o `test -f 'pointscomm.cpp' || echo '$(srcdir)/'`pointscomm.cpp
 
 supervclimso-pointscomm.obj: pointscomm.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-pointscomm.obj -MD -MP -MF $(DEPDIR)/supervclimso-pointscomm.Tpo -c -o supervclimso-pointscomm.obj `if test -f 'pointscomm.cpp'; then $(CYGPATH_W) 'pointscomm.cpp'; else $(CYGPATH_W) '$(srcdir)/pointscomm.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-pointscomm.obj -MD -MP -MF $(DEPDIR)/supervclimso-pointscomm.Tpo -c -o supervclimso-pointscomm.obj `if test -f 'pointscomm.cpp'; then $(CYGPATH_W) 'pointscomm.cpp'; else $(CYGPATH_W) '$(srcdir)/pointscomm.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-pointscomm.Tpo $(DEPDIR)/supervclimso-pointscomm.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pointscomm.cpp' object='supervclimso-pointscomm.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-pointscomm.obj `if test -f 'pointscomm.cpp'; then $(CYGPATH_W) 'pointscomm.cpp'; else $(CYGPATH_W) '$(srcdir)/pointscomm.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-pointscomm.obj `if test -f 'pointscomm.cpp'; then $(CYGPATH_W) 'pointscomm.cpp'; else $(CYGPATH_W) '$(srcdir)/pointscomm.cpp'; fi`
 
 supervclimso-WidgetPoseCentrage.o: WidgetPoseCentrage.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseCentrage.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseCentrage.Tpo -c -o supervclimso-WidgetPoseCentrage.o `test -f 'WidgetPoseCentrage.cpp' || echo '$(srcdir)/'`WidgetPoseCentrage.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseCentrage.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseCentrage.Tpo -c -o supervclimso-WidgetPoseCentrage.o `test -f 'WidgetPoseCentrage.cpp' || echo '$(srcdir)/'`WidgetPoseCentrage.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetPoseCentrage.Tpo $(DEPDIR)/supervclimso-WidgetPoseCentrage.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetPoseCentrage.cpp' object='supervclimso-WidgetPoseCentrage.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseCentrage.o `test -f 'WidgetPoseCentrage.cpp' || echo '$(srcdir)/'`WidgetPoseCentrage.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseCentrage.o `test -f 'WidgetPoseCentrage.cpp' || echo '$(srcdir)/'`WidgetPoseCentrage.cpp
 
 supervclimso-WidgetPoseCentrage.obj: WidgetPoseCentrage.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseCentrage.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseCentrage.Tpo -c -o supervclimso-WidgetPoseCentrage.obj `if test -f 'WidgetPoseCentrage.cpp'; then $(CYGPATH_W) 'WidgetPoseCentrage.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseCentrage.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseCentrage.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseCentrage.Tpo -c -o supervclimso-WidgetPoseCentrage.obj `if test -f 'WidgetPoseCentrage.cpp'; then $(CYGPATH_W) 'WidgetPoseCentrage.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseCentrage.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetPoseCentrage.Tpo $(DEPDIR)/supervclimso-WidgetPoseCentrage.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetPoseCentrage.cpp' object='supervclimso-WidgetPoseCentrage.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseCentrage.obj `if test -f 'WidgetPoseCentrage.cpp'; then $(CYGPATH_W) 'WidgetPoseCentrage.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseCentrage.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseCentrage.obj `if test -f 'WidgetPoseCentrage.cpp'; then $(CYGPATH_W) 'WidgetPoseCentrage.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseCentrage.cpp'; fi`
 
 supervclimso-WidgetPoseImage.o: WidgetPoseImage.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseImage.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseImage.Tpo -c -o supervclimso-WidgetPoseImage.o `test -f 'WidgetPoseImage.cpp' || echo '$(srcdir)/'`WidgetPoseImage.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseImage.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseImage.Tpo -c -o supervclimso-WidgetPoseImage.o `test -f 'WidgetPoseImage.cpp' || echo '$(srcdir)/'`WidgetPoseImage.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetPoseImage.Tpo $(DEPDIR)/supervclimso-WidgetPoseImage.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetPoseImage.cpp' object='supervclimso-WidgetPoseImage.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseImage.o `test -f 'WidgetPoseImage.cpp' || echo '$(srcdir)/'`WidgetPoseImage.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseImage.o `test -f 'WidgetPoseImage.cpp' || echo '$(srcdir)/'`WidgetPoseImage.cpp
 
 supervclimso-WidgetPoseImage.obj: WidgetPoseImage.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseImage.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseImage.Tpo -c -o supervclimso-WidgetPoseImage.obj `if test -f 'WidgetPoseImage.cpp'; then $(CYGPATH_W) 'WidgetPoseImage.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseImage.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseImage.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseImage.Tpo -c -o supervclimso-WidgetPoseImage.obj `if test -f 'WidgetPoseImage.cpp'; then $(CYGPATH_W) 'WidgetPoseImage.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseImage.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetPoseImage.Tpo $(DEPDIR)/supervclimso-WidgetPoseImage.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetPoseImage.cpp' object='supervclimso-WidgetPoseImage.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseImage.obj `if test -f 'WidgetPoseImage.cpp'; then $(CYGPATH_W) 'WidgetPoseImage.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseImage.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseImage.obj `if test -f 'WidgetPoseImage.cpp'; then $(CYGPATH_W) 'WidgetPoseImage.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseImage.cpp'; fi`
 
 supervclimso-calculsastronomiques.o: calculsastronomiques.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-calculsastronomiques.o -MD -MP -MF $(DEPDIR)/supervclimso-calculsastronomiques.Tpo -c -o supervclimso-calculsastronomiques.o `test -f 'calculsastronomiques.cpp' || echo '$(srcdir)/'`calculsastronomiques.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-calculsastronomiques.o -MD -MP -MF $(DEPDIR)/supervclimso-calculsastronomiques.Tpo -c -o supervclimso-calculsastronomiques.o `test -f 'calculsastronomiques.cpp' || echo '$(srcdir)/'`calculsastronomiques.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-calculsastronomiques.Tpo $(DEPDIR)/supervclimso-calculsastronomiques.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='calculsastronomiques.cpp' object='supervclimso-calculsastronomiques.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-calculsastronomiques.o `test -f 'calculsastronomiques.cpp' || echo '$(srcdir)/'`calculsastronomiques.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-calculsastronomiques.o `test -f 'calculsastronomiques.cpp' || echo '$(srcdir)/'`calculsastronomiques.cpp
 
 supervclimso-calculsastronomiques.obj: calculsastronomiques.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-calculsastronomiques.obj -MD -MP -MF $(DEPDIR)/supervclimso-calculsastronomiques.Tpo -c -o supervclimso-calculsastronomiques.obj `if test -f 'calculsastronomiques.cpp'; then $(CYGPATH_W) 'calculsastronomiques.cpp'; else $(CYGPATH_W) '$(srcdir)/calculsastronomiques.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-calculsastronomiques.obj -MD -MP -MF $(DEPDIR)/supervclimso-calculsastronomiques.Tpo -c -o supervclimso-calculsastronomiques.obj `if test -f 'calculsastronomiques.cpp'; then $(CYGPATH_W) 'calculsastronomiques.cpp'; else $(CYGPATH_W) '$(srcdir)/calculsastronomiques.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-calculsastronomiques.Tpo $(DEPDIR)/supervclimso-calculsastronomiques.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='calculsastronomiques.cpp' object='supervclimso-calculsastronomiques.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-calculsastronomiques.obj `if test -f 'calculsastronomiques.cpp'; then $(CYGPATH_W) 'calculsastronomiques.cpp'; else $(CYGPATH_W) '$(srcdir)/calculsastronomiques.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-calculsastronomiques.obj `if test -f 'calculsastronomiques.cpp'; then $(CYGPATH_W) 'calculsastronomiques.cpp'; else $(CYGPATH_W) '$(srcdir)/calculsastronomiques.cpp'; fi`
 
 supervclimso-WidgetSoleilHeliographique.o: WidgetSoleilHeliographique.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetSoleilHeliographique.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.Tpo -c -o supervclimso-WidgetSoleilHeliographique.o `test -f 'WidgetSoleilHeliographique.cpp' || echo '$(srcdir)/'`WidgetSoleilHeliographique.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetSoleilHeliographique.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.Tpo -c -o supervclimso-WidgetSoleilHeliographique.o `test -f 'WidgetSoleilHeliographique.cpp' || echo '$(srcdir)/'`WidgetSoleilHeliographique.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.Tpo $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetSoleilHeliographique.cpp' object='supervclimso-WidgetSoleilHeliographique.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetSoleilHeliographique.o `test -f 'WidgetSoleilHeliographique.cpp' || echo '$(srcdir)/'`WidgetSoleilHeliographique.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetSoleilHeliographique.o `test -f 'WidgetSoleilHeliographique.cpp' || echo '$(srcdir)/'`WidgetSoleilHeliographique.cpp
 
 supervclimso-WidgetSoleilHeliographique.obj: WidgetSoleilHeliographique.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetSoleilHeliographique.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.Tpo -c -o supervclimso-WidgetSoleilHeliographique.obj `if test -f 'WidgetSoleilHeliographique.cpp'; then $(CYGPATH_W) 'WidgetSoleilHeliographique.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetSoleilHeliographique.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetSoleilHeliographique.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.Tpo -c -o supervclimso-WidgetSoleilHeliographique.obj `if test -f 'WidgetSoleilHeliographique.cpp'; then $(CYGPATH_W) 'WidgetSoleilHeliographique.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetSoleilHeliographique.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.Tpo $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetSoleilHeliographique.cpp' object='supervclimso-WidgetSoleilHeliographique.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetSoleilHeliographique.obj `if test -f 'WidgetSoleilHeliographique.cpp'; then $(CYGPATH_W) 'WidgetSoleilHeliographique.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetSoleilHeliographique.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetSoleilHeliographique.obj `if test -f 'WidgetSoleilHeliographique.cpp'; then $(CYGPATH_W) 'WidgetSoleilHeliographique.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetSoleilHeliographique.cpp'; fi`
 
 supervclimso-WidgetRoueOuvertureCLIMSO.o: WidgetRoueOuvertureCLIMSO.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueOuvertureCLIMSO.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.Tpo -c -o supervclimso-WidgetRoueOuvertureCLIMSO.o `test -f 'WidgetRoueOuvertureCLIMSO.cpp' || echo '$(srcdir)/'`WidgetRoueOuvertureCLIMSO.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueOuvertureCLIMSO.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.Tpo -c -o supervclimso-WidgetRoueOuvertureCLIMSO.o `test -f 'WidgetRoueOuvertureCLIMSO.cpp' || echo '$(srcdir)/'`WidgetRoueOuvertureCLIMSO.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.Tpo $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetRoueOuvertureCLIMSO.cpp' object='supervclimso-WidgetRoueOuvertureCLIMSO.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueOuvertureCLIMSO.o `test -f 'WidgetRoueOuvertureCLIMSO.cpp' || echo '$(srcdir)/'`WidgetRoueOuvertureCLIMSO.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueOuvertureCLIMSO.o `test -f 'WidgetRoueOuvertureCLIMSO.cpp' || echo '$(srcdir)/'`WidgetRoueOuvertureCLIMSO.cpp
 
 supervclimso-WidgetRoueOuvertureCLIMSO.obj: WidgetRoueOuvertureCLIMSO.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueOuvertureCLIMSO.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.Tpo -c -o supervclimso-WidgetRoueOuvertureCLIMSO.obj `if test -f 'WidgetRoueOuvertureCLIMSO.cpp'; then $(CYGPATH_W) 'WidgetRoueOuvertureCLIMSO.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueOuvertureCLIMSO.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueOuvertureCLIMSO.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.Tpo -c -o supervclimso-WidgetRoueOuvertureCLIMSO.obj `if test -f 'WidgetRoueOuvertureCLIMSO.cpp'; then $(CYGPATH_W) 'WidgetRoueOuvertureCLIMSO.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueOuvertureCLIMSO.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.Tpo $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetRoueOuvertureCLIMSO.cpp' object='supervclimso-WidgetRoueOuvertureCLIMSO.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueOuvertureCLIMSO.obj `if test -f 'WidgetRoueOuvertureCLIMSO.cpp'; then $(CYGPATH_W) 'WidgetRoueOuvertureCLIMSO.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueOuvertureCLIMSO.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueOuvertureCLIMSO.obj `if test -f 'WidgetRoueOuvertureCLIMSO.cpp'; then $(CYGPATH_W) 'WidgetRoueOuvertureCLIMSO.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueOuvertureCLIMSO.cpp'; fi`
 
 supervclimso-WidgetRoueFiltresC2.o: WidgetRoueFiltresC2.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueFiltresC2.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.Tpo -c -o supervclimso-WidgetRoueFiltresC2.o `test -f 'WidgetRoueFiltresC2.cpp' || echo '$(srcdir)/'`WidgetRoueFiltresC2.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueFiltresC2.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.Tpo -c -o supervclimso-WidgetRoueFiltresC2.o `test -f 'WidgetRoueFiltresC2.cpp' || echo '$(srcdir)/'`WidgetRoueFiltresC2.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.Tpo $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetRoueFiltresC2.cpp' object='supervclimso-WidgetRoueFiltresC2.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueFiltresC2.o `test -f 'WidgetRoueFiltresC2.cpp' || echo '$(srcdir)/'`WidgetRoueFiltresC2.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueFiltresC2.o `test -f 'WidgetRoueFiltresC2.cpp' || echo '$(srcdir)/'`WidgetRoueFiltresC2.cpp
 
 supervclimso-WidgetRoueFiltresC2.obj: WidgetRoueFiltresC2.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueFiltresC2.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.Tpo -c -o supervclimso-WidgetRoueFiltresC2.obj `if test -f 'WidgetRoueFiltresC2.cpp'; then $(CYGPATH_W) 'WidgetRoueFiltresC2.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueFiltresC2.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueFiltresC2.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.Tpo -c -o supervclimso-WidgetRoueFiltresC2.obj `if test -f 'WidgetRoueFiltresC2.cpp'; then $(CYGPATH_W) 'WidgetRoueFiltresC2.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueFiltresC2.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.Tpo $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetRoueFiltresC2.cpp' object='supervclimso-WidgetRoueFiltresC2.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueFiltresC2.obj `if test -f 'WidgetRoueFiltresC2.cpp'; then $(CYGPATH_W) 'WidgetRoueFiltresC2.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueFiltresC2.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueFiltresC2.obj `if test -f 'WidgetRoueFiltresC2.cpp'; then $(CYGPATH_W) 'WidgetRoueFiltresC2.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueFiltresC2.cpp'; fi`
 
 supervclimso-WidgetSoleilHeliographique.moc.o: WidgetSoleilHeliographique.moc.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetSoleilHeliographique.moc.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.moc.Tpo -c -o supervclimso-WidgetSoleilHeliographique.moc.o `test -f 'WidgetSoleilHeliographique.moc.cpp' || echo '$(srcdir)/'`WidgetSoleilHeliographique.moc.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetSoleilHeliographique.moc.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.moc.Tpo -c -o supervclimso-WidgetSoleilHeliographique.moc.o `test -f 'WidgetSoleilHeliographique.moc.cpp' || echo '$(srcdir)/'`WidgetSoleilHeliographique.moc.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.moc.Tpo $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.moc.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetSoleilHeliographique.moc.cpp' object='supervclimso-WidgetSoleilHeliographique.moc.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetSoleilHeliographique.moc.o `test -f 'WidgetSoleilHeliographique.moc.cpp' || echo '$(srcdir)/'`WidgetSoleilHeliographique.moc.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetSoleilHeliographique.moc.o `test -f 'WidgetSoleilHeliographique.moc.cpp' || echo '$(srcdir)/'`WidgetSoleilHeliographique.moc.cpp
 
 supervclimso-WidgetSoleilHeliographique.moc.obj: WidgetSoleilHeliographique.moc.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetSoleilHeliographique.moc.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.moc.Tpo -c -o supervclimso-WidgetSoleilHeliographique.moc.obj `if test -f 'WidgetSoleilHeliographique.moc.cpp'; then $(CYGPATH_W) 'WidgetSoleilHeliographique.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetSoleilHeliographique.moc.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetSoleilHeliographique.moc.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.moc.Tpo -c -o supervclimso-WidgetSoleilHeliographique.moc.obj `if test -f 'WidgetSoleilHeliographique.moc.cpp'; then $(CYGPATH_W) 'WidgetSoleilHeliographique.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetSoleilHeliographique.moc.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.moc.Tpo $(DEPDIR)/supervclimso-WidgetSoleilHeliographique.moc.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetSoleilHeliographique.moc.cpp' object='supervclimso-WidgetSoleilHeliographique.moc.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetSoleilHeliographique.moc.obj `if test -f 'WidgetSoleilHeliographique.moc.cpp'; then $(CYGPATH_W) 'WidgetSoleilHeliographique.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetSoleilHeliographique.moc.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetSoleilHeliographique.moc.obj `if test -f 'WidgetSoleilHeliographique.moc.cpp'; then $(CYGPATH_W) 'WidgetSoleilHeliographique.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetSoleilHeliographique.moc.cpp'; fi`
 
 supervclimso-WidgetRoueOuvertureCLIMSO.moc.o: WidgetRoueOuvertureCLIMSO.moc.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueOuvertureCLIMSO.moc.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.moc.Tpo -c -o supervclimso-WidgetRoueOuvertureCLIMSO.moc.o `test -f 'WidgetRoueOuvertureCLIMSO.moc.cpp' || echo '$(srcdir)/'`WidgetRoueOuvertureCLIMSO.moc.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueOuvertureCLIMSO.moc.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.moc.Tpo -c -o supervclimso-WidgetRoueOuvertureCLIMSO.moc.o `test -f 'WidgetRoueOuvertureCLIMSO.moc.cpp' || echo '$(srcdir)/'`WidgetRoueOuvertureCLIMSO.moc.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.moc.Tpo $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.moc.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetRoueOuvertureCLIMSO.moc.cpp' object='supervclimso-WidgetRoueOuvertureCLIMSO.moc.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueOuvertureCLIMSO.moc.o `test -f 'WidgetRoueOuvertureCLIMSO.moc.cpp' || echo '$(srcdir)/'`WidgetRoueOuvertureCLIMSO.moc.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueOuvertureCLIMSO.moc.o `test -f 'WidgetRoueOuvertureCLIMSO.moc.cpp' || echo '$(srcdir)/'`WidgetRoueOuvertureCLIMSO.moc.cpp
 
 supervclimso-WidgetRoueOuvertureCLIMSO.moc.obj: WidgetRoueOuvertureCLIMSO.moc.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueOuvertureCLIMSO.moc.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.moc.Tpo -c -o supervclimso-WidgetRoueOuvertureCLIMSO.moc.obj `if test -f 'WidgetRoueOuvertureCLIMSO.moc.cpp'; then $(CYGPATH_W) 'WidgetRoueOuvertureCLIMSO.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueOuvertureCLIMSO.moc.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueOuvertureCLIMSO.moc.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.moc.Tpo -c -o supervclimso-WidgetRoueOuvertureCLIMSO.moc.obj `if test -f 'WidgetRoueOuvertureCLIMSO.moc.cpp'; then $(CYGPATH_W) 'WidgetRoueOuvertureCLIMSO.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueOuvertureCLIMSO.moc.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.moc.Tpo $(DEPDIR)/supervclimso-WidgetRoueOuvertureCLIMSO.moc.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetRoueOuvertureCLIMSO.moc.cpp' object='supervclimso-WidgetRoueOuvertureCLIMSO.moc.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueOuvertureCLIMSO.moc.obj `if test -f 'WidgetRoueOuvertureCLIMSO.moc.cpp'; then $(CYGPATH_W) 'WidgetRoueOuvertureCLIMSO.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueOuvertureCLIMSO.moc.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueOuvertureCLIMSO.moc.obj `if test -f 'WidgetRoueOuvertureCLIMSO.moc.cpp'; then $(CYGPATH_W) 'WidgetRoueOuvertureCLIMSO.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueOuvertureCLIMSO.moc.cpp'; fi`
 
 supervclimso-WidgetRoueFiltresC2.moc.o: WidgetRoueFiltresC2.moc.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueFiltresC2.moc.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.moc.Tpo -c -o supervclimso-WidgetRoueFiltresC2.moc.o `test -f 'WidgetRoueFiltresC2.moc.cpp' || echo '$(srcdir)/'`WidgetRoueFiltresC2.moc.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueFiltresC2.moc.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.moc.Tpo -c -o supervclimso-WidgetRoueFiltresC2.moc.o `test -f 'WidgetRoueFiltresC2.moc.cpp' || echo '$(srcdir)/'`WidgetRoueFiltresC2.moc.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.moc.Tpo $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.moc.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetRoueFiltresC2.moc.cpp' object='supervclimso-WidgetRoueFiltresC2.moc.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueFiltresC2.moc.o `test -f 'WidgetRoueFiltresC2.moc.cpp' || echo '$(srcdir)/'`WidgetRoueFiltresC2.moc.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueFiltresC2.moc.o `test -f 'WidgetRoueFiltresC2.moc.cpp' || echo '$(srcdir)/'`WidgetRoueFiltresC2.moc.cpp
 
 supervclimso-WidgetRoueFiltresC2.moc.obj: WidgetRoueFiltresC2.moc.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueFiltresC2.moc.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.moc.Tpo -c -o supervclimso-WidgetRoueFiltresC2.moc.obj `if test -f 'WidgetRoueFiltresC2.moc.cpp'; then $(CYGPATH_W) 'WidgetRoueFiltresC2.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueFiltresC2.moc.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetRoueFiltresC2.moc.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.moc.Tpo -c -o supervclimso-WidgetRoueFiltresC2.moc.obj `if test -f 'WidgetRoueFiltresC2.moc.cpp'; then $(CYGPATH_W) 'WidgetRoueFiltresC2.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueFiltresC2.moc.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.moc.Tpo $(DEPDIR)/supervclimso-WidgetRoueFiltresC2.moc.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetRoueFiltresC2.moc.cpp' object='supervclimso-WidgetRoueFiltresC2.moc.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueFiltresC2.moc.obj `if test -f 'WidgetRoueFiltresC2.moc.cpp'; then $(CYGPATH_W) 'WidgetRoueFiltresC2.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueFiltresC2.moc.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetRoueFiltresC2.moc.obj `if test -f 'WidgetRoueFiltresC2.moc.cpp'; then $(CYGPATH_W) 'WidgetRoueFiltresC2.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetRoueFiltresC2.moc.cpp'; fi`
 
 supervclimso-WidgetPoseCentrage.moc.o: WidgetPoseCentrage.moc.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseCentrage.moc.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseCentrage.moc.Tpo -c -o supervclimso-WidgetPoseCentrage.moc.o `test -f 'WidgetPoseCentrage.moc.cpp' || echo '$(srcdir)/'`WidgetPoseCentrage.moc.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseCentrage.moc.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseCentrage.moc.Tpo -c -o supervclimso-WidgetPoseCentrage.moc.o `test -f 'WidgetPoseCentrage.moc.cpp' || echo '$(srcdir)/'`WidgetPoseCentrage.moc.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetPoseCentrage.moc.Tpo $(DEPDIR)/supervclimso-WidgetPoseCentrage.moc.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetPoseCentrage.moc.cpp' object='supervclimso-WidgetPoseCentrage.moc.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseCentrage.moc.o `test -f 'WidgetPoseCentrage.moc.cpp' || echo '$(srcdir)/'`WidgetPoseCentrage.moc.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseCentrage.moc.o `test -f 'WidgetPoseCentrage.moc.cpp' || echo '$(srcdir)/'`WidgetPoseCentrage.moc.cpp
 
 supervclimso-WidgetPoseCentrage.moc.obj: WidgetPoseCentrage.moc.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseCentrage.moc.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseCentrage.moc.Tpo -c -o supervclimso-WidgetPoseCentrage.moc.obj `if test -f 'WidgetPoseCentrage.moc.cpp'; then $(CYGPATH_W) 'WidgetPoseCentrage.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseCentrage.moc.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseCentrage.moc.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseCentrage.moc.Tpo -c -o supervclimso-WidgetPoseCentrage.moc.obj `if test -f 'WidgetPoseCentrage.moc.cpp'; then $(CYGPATH_W) 'WidgetPoseCentrage.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseCentrage.moc.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetPoseCentrage.moc.Tpo $(DEPDIR)/supervclimso-WidgetPoseCentrage.moc.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetPoseCentrage.moc.cpp' object='supervclimso-WidgetPoseCentrage.moc.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseCentrage.moc.obj `if test -f 'WidgetPoseCentrage.moc.cpp'; then $(CYGPATH_W) 'WidgetPoseCentrage.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseCentrage.moc.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseCentrage.moc.obj `if test -f 'WidgetPoseCentrage.moc.cpp'; then $(CYGPATH_W) 'WidgetPoseCentrage.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseCentrage.moc.cpp'; fi`
 
 supervclimso-WidgetPoseImage.moc.o: WidgetPoseImage.moc.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseImage.moc.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseImage.moc.Tpo -c -o supervclimso-WidgetPoseImage.moc.o `test -f 'WidgetPoseImage.moc.cpp' || echo '$(srcdir)/'`WidgetPoseImage.moc.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseImage.moc.o -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseImage.moc.Tpo -c -o supervclimso-WidgetPoseImage.moc.o `test -f 'WidgetPoseImage.moc.cpp' || echo '$(srcdir)/'`WidgetPoseImage.moc.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetPoseImage.moc.Tpo $(DEPDIR)/supervclimso-WidgetPoseImage.moc.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetPoseImage.moc.cpp' object='supervclimso-WidgetPoseImage.moc.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseImage.moc.o `test -f 'WidgetPoseImage.moc.cpp' || echo '$(srcdir)/'`WidgetPoseImage.moc.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseImage.moc.o `test -f 'WidgetPoseImage.moc.cpp' || echo '$(srcdir)/'`WidgetPoseImage.moc.cpp
 
 supervclimso-WidgetPoseImage.moc.obj: WidgetPoseImage.moc.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseImage.moc.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseImage.moc.Tpo -c -o supervclimso-WidgetPoseImage.moc.obj `if test -f 'WidgetPoseImage.moc.cpp'; then $(CYGPATH_W) 'WidgetPoseImage.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseImage.moc.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-WidgetPoseImage.moc.obj -MD -MP -MF $(DEPDIR)/supervclimso-WidgetPoseImage.moc.Tpo -c -o supervclimso-WidgetPoseImage.moc.obj `if test -f 'WidgetPoseImage.moc.cpp'; then $(CYGPATH_W) 'WidgetPoseImage.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseImage.moc.cpp'; fi`
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-WidgetPoseImage.moc.Tpo $(DEPDIR)/supervclimso-WidgetPoseImage.moc.Po
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='WidgetPoseImage.moc.cpp' object='supervclimso-WidgetPoseImage.moc.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseImage.moc.obj `if test -f 'WidgetPoseImage.moc.cpp'; then $(CYGPATH_W) 'WidgetPoseImage.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseImage.moc.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-WidgetPoseImage.moc.obj `if test -f 'WidgetPoseImage.moc.cpp'; then $(CYGPATH_W) 'WidgetPoseImage.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/WidgetPoseImage.moc.cpp'; fi`
 
-mostlyclean-libtool:
-	-rm -f *.lo
+supervclimso-supervclimso.moc.o: supervclimso.moc.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-supervclimso.moc.o -MD -MP -MF $(DEPDIR)/supervclimso-supervclimso.moc.Tpo -c -o supervclimso-supervclimso.moc.o `test -f 'supervclimso.moc.cpp' || echo '$(srcdir)/'`supervclimso.moc.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-supervclimso.moc.Tpo $(DEPDIR)/supervclimso-supervclimso.moc.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='supervclimso.moc.cpp' object='supervclimso-supervclimso.moc.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-supervclimso.moc.o `test -f 'supervclimso.moc.cpp' || echo '$(srcdir)/'`supervclimso.moc.cpp
 
-clean-libtool:
-	-rm -rf .libs _libs
-install-shelldesktopDATA: $(shelldesktop_DATA)
-	@$(NORMAL_INSTALL)
-	@list='$(shelldesktop_DATA)'; test -n "$(shelldesktopdir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(shelldesktopdir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(shelldesktopdir)" || exit 1; \
-	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(shelldesktopdir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(shelldesktopdir)" || exit $$?; \
-	done
-
-uninstall-shelldesktopDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(shelldesktop_DATA)'; test -n "$(shelldesktopdir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(shelldesktopdir)'; $(am__uninstall_files_from_dir)
-install-shellrcDATA: $(shellrc_DATA)
-	@$(NORMAL_INSTALL)
-	@list='$(shellrc_DATA)'; test -n "$(shellrcdir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(shellrcdir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(shellrcdir)" || exit 1; \
-	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(shellrcdir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(shellrcdir)" || exit $$?; \
-	done
-
-uninstall-shellrcDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(shellrc_DATA)'; test -n "$(shellrcdir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(shellrcdir)'; $(am__uninstall_files_from_dir)
+supervclimso-supervclimso.moc.obj: supervclimso.moc.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -MT supervclimso-supervclimso.moc.obj -MD -MP -MF $(DEPDIR)/supervclimso-supervclimso.moc.Tpo -c -o supervclimso-supervclimso.moc.obj `if test -f 'supervclimso.moc.cpp'; then $(CYGPATH_W) 'supervclimso.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/supervclimso.moc.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/supervclimso-supervclimso.moc.Tpo $(DEPDIR)/supervclimso-supervclimso.moc.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='supervclimso.moc.cpp' object='supervclimso-supervclimso.moc.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(supervclimso_CPPFLAGS) $(CPPFLAGS) $(supervclimso_CXXFLAGS) $(CXXFLAGS) -c -o supervclimso-supervclimso.moc.obj `if test -f 'supervclimso.moc.cpp'; then $(CYGPATH_W) 'supervclimso.moc.cpp'; else $(CYGPATH_W) '$(srcdir)/supervclimso.moc.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -934,13 +788,15 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-check: check-am
-all-am: Makefile $(PROGRAMS) $(DATA) $(HEADERS)
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-am
+all-am: Makefile $(PROGRAMS) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(shelldesktopdir)" "$(DESTDIR)$(shellrcdir)"; do \
+	for dir in "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-am
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -966,13 +822,15 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -992,7 +850,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-shelldesktopDATA install-shellrcDATA
+install-data-am:
 
 install-dvi: install-dvi-am
 
@@ -1027,8 +885,7 @@ maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool
+mostlyclean-am: mostlyclean-compile mostlyclean-generic
 
 pdf: pdf-am
 
@@ -1038,31 +895,72 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS uninstall-shelldesktopDATA \
-	uninstall-shellrcDATA
+uninstall-am: uninstall-binPROGRAMS
 
-.MAKE: install-am install-strip
+.MAKE: all check install install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
-	clean-binPROGRAMS clean-generic clean-libtool cscopelist-am \
-	ctags ctags-am distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-binPROGRAMS \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-ps install-ps-am \
-	install-shelldesktopDATA install-shellrcDATA install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am uninstall-binPROGRAMS \
-	uninstall-shelldesktopDATA uninstall-shellrcDATA
+	clean-binPROGRAMS clean-generic cscopelist-am ctags ctags-am \
+	distclean distclean-compile distclean-generic distclean-tags \
+	distdir dvi dvi-am html html-am info info-am install \
+	install-am install-binPROGRAMS install-data install-data-am \
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic pdf pdf-am \
+	ps ps-am tags tags-am uninstall uninstall-am \
+	uninstall-binPROGRAMS
 
 
-messages: rc.cpp
-	$(EXTRACTRC) `find . -name \*.ui -o -name \*.rc` > rc.cpp
-	$(XGETTEXT) *.cpp -o $(podir)/supervclimso.pot
+ # ------------- #
+ # DOCUMENTATION #
+ # ------------- #
+
+# --- #
+# MOC #
+# --- #
+
+.h.moc.cpp:
+	$(MOC) $< -o $@
+
+# --- #
+# UIC #
+# --- #
+
+.ui.ui.hh:
+	$(UIC) $< -o $@
+
+#.ui.ui.h:
+#	$(UIC) $< -o $@
+%_ui.h: %.ui
+	$(UIC) $< -o $@
+
+# --- #
+# RCC #
+# --- #
+
+.qrc.qrc.cpp:
+	$(RCC) -name `echo "$<" | sed 's/\.qrc$$//'` $< -o $@
+
+.qrc.qrc.cc:
+	$(RCC) -name `echo "$<" | sed 's/\.qrc$$//'` $< -o $@
+
+.qrc.qrc.cxx:
+	$(RCC) -name `echo "$<" | sed 's/\.qrc$$//'` $< -o $@
+
+.qrc.qrc.C:
+	$(RCC) -name `echo "$<" | sed 's/\.qrc$$//'` $< -o $@
+
+# Règle perso car la règle présente dans autotroll.mk (%ui_.h: %.ui) ne marche pas
+# pour produire du src/ui_blabla.h (car il faut deux wildcards, genre %ui_%.h)
+#src/ui_%.h: src/%.ui
+#	$(UIC) $< -o $@
+
+# NOTE sur $(srcdir) et $(includedir)
+# il faudrait théoriquement préfixer tous les fichiers source par $(srcdir)
+# et tous les fichiers header par $(includedir)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
