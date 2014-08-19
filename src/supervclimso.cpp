@@ -3288,10 +3288,11 @@ void SupervCLIMSO::SlotPulsar1s(void)
 		// Si on vient de trouver l'index de la roue a filtre de C2 et que l'on a deja trouve l'index de la roue d'ouverture
 		//
 		// XXX A commenter pour la recherche roue
+/*
 		AxeIndexTrouve[AXE_ROUE_FILTREC2]=true;
 		aFiltreC2=FiltreC2_NonInitialise;
 		FiltreC2=FiltreC2_10830;
-
+*/
 		if( AxeIndexTrouve[AXE_ROUE_FILTREC2] && (AxeRechIndexEnCours == AXE_ROUE_FILTREC2) )
 		{
 			// Le filtre actif n'est pas pas connu pour l'instant
@@ -3300,9 +3301,9 @@ void SupervCLIMSO::SlotPulsar1s(void)
 			FiltreC2=FiltreC2_SansFiltre;
 
 // XXX A reactiver pour la la recherche roue
-/*			AxeRechIndexEnCours=AXE_PLATINE_X;
+			AxeRechIndexEnCours=AXE_PLATINE_X;
 			PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_PLATINE_X);
-*/
+
 			// Mise a jour des boutons
 			//
 			MAJEtatBoutonsFP();
@@ -3311,7 +3312,7 @@ void SupervCLIMSO::SlotPulsar1s(void)
 		// Si on vient de trouver la position HOME de l'axe X de la platine et que l'on a deja trouve l'index de la roue a filtre de C2
 		//
 // XXX A reactiver pour la recherche platine X
-/*		if( AxeIndexTrouve[AXE_PLATINE_X] && (AxeRechIndexEnCours == AXE_PLATINE_X) )
+		if( AxeIndexTrouve[AXE_PLATINE_X] && (AxeRechIndexEnCours == AXE_PLATINE_X) )
 		{
 			AxeRechIndexEnCours=AXE_PLATINE_Y;
 			PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_PLATINE_Y);
@@ -3320,22 +3321,21 @@ void SupervCLIMSO::SlotPulsar1s(void)
 			//
 			MAJEtatBoutonsFP();
 		}
-*/
+
 // XXX A reactiver pour la recherche platine Y
 		// Si on vient de trouver la position HOME de l'axe Y de la platine et que l'on a deja trouve la position HOME de la platine X
 		//
-/*		if( AxeIndexTrouve[AXE_PLATINE_Y] && (AxeRechIndexEnCours == AXE_PLATINE_Y) )
+		if( AxeIndexTrouve[AXE_PLATINE_Y] && (AxeRechIndexEnCours == AXE_PLATINE_Y) )
 		{
-
 			// Mise a jour des boutons
 			//
 			MAJEtatBoutonsFP();
 		}
-*/
+
 		// Si on a trouve tous les index
 		//
-		if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] && AxeIndexTrouve[AXE_ROUE_FILTREC2] /* && AxeIndexTrouve[AXE_PLATINE_X] && AxeIndexTrouve[AXE_PLATINE_Y] */ )
-		{
+		if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] && AxeIndexTrouve[AXE_ROUE_FILTREC2] && AxeIndexTrouve[AXE_PLATINE_X] && AxeIndexTrouve[AXE_PLATINE_Y] )
+		{ // XXX Un ajout à cette condition a été fait en 2010
 			AxesInitialises=true;
 			AxeRechIndexEnCours=AXE_NON_RECHERCHE;
 
@@ -12552,4 +12552,4 @@ void ProcessusLegerListeAcquisitionsL2::run()
 }
 
 
-// #include "supervclimso.moc.cpp" XXX Ce fichier est maintenant inclus lors de la compilation
+// #include "supervclimso.moc.cpp" XXX Ce fichier est maintenant inclus lors de la compilation (voir
