@@ -7,12 +7,12 @@
 
 // Inclusion C
 //
-#include <cfitsio/fitsio.h> // XXX
+#include <cfitsio/fitsio.h> // XXX L'instal standard de cfitsio par yum met les headers dans cfitsio/
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
-#include <unistd.h> // MAELVALAIS: pour sleep()
+#include <unistd.h> // XXX MAELVALAIS: pour sleep()
 
 // Inclusions C++
 //
@@ -190,8 +190,8 @@ double PositionsFiltresC2CLIMSO[]=
 QString DesignationSondeTemperature[]=
 {
 	" Ambiante coupole",
-	" Caisson informatique",
-	" Caisson occulteur Coro1",
+	" Caisson informatique 1",
+	" Caisson informatique 2",
 	" Caisson filtre Coro1",
 	" Caisson O3 Coro1",
 	" Caisson occulteur Coro2",
@@ -817,7 +817,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoiteRangementHorizontal5->setSizePolicy(QSizePolicy(QSizePolicy::Maximum,QSizePolicy::Minimum));
 
-	for( i=0; i < NB_AXES; i++ )
+	for( i=0; i < AXE_PLATINE_X; i++ )
 	{
 		// Le label nom de l'axe
 		//
@@ -826,22 +826,17 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 			std::cerr << "SupervCLIMSO: ERREUR: Impossible de creer le widget QLabel:LabelAxe[" << i << "] de la boite de rangement horizontal 5 de la fenetre principale." << std::endl;
 		}
 		LabelAxe[i]->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
-		LabelAxe[i]->setFixedSize(TAILLE_X_LABEL_AXECODEUR,TAILLE_Y_LABEL_AXECODEUR);
 		LabelAxe[i]->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
 		switch( i )
 		{
 			case AXE_ROUE_OUVERTURE:
+				LabelAxe[i]->setFixedSize(TAILLE_X_LABEL_AXECODEUR,TAILLE_Y_LABEL_AXECODEUR);
 				LabelAxe[i]->setText("Roue Ouverture:");
 				break;
 			case AXE_ROUE_FILTREC2:
+				LabelAxe[i]->setFixedSize(TAILLE_X_LABEL_AXECODEUR,TAILLE_Y_LABEL_AXECODEUR);
 				LabelAxe[i]->setText("Roue filtre C2:");
-				break;
-			case AXE_PLATINE_X:
-				LabelAxe[i]->setText("Platine X:");
-				break;
-			case AXE_PLATINE_Y:
-				LabelAxe[i]->setText("Platine Y:");
 				break;
 		}
 
@@ -865,45 +860,90 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 			case AXE_ROUE_FILTREC2:
 				QToolTip::add(LCDAxeCodeur[i],QString::fromLocal8Bit("Position angulaire de la roue à filtre de C2 en incréments quadrature codeur"));
 				break;
+		}
+	}
 
+	for( i=AXE_PLATINE_X; i < NB_AXES; i++ )
+	{
+		// LCD d'affichage de la position en points quadratures codeur
+		//
+		if( (LCDAxeCodeur[i]=new (std::nothrow) QLCDNumber(BoiteRangementHorizontal5,QString("SupervCLIMSO-BoiteRangementHorizontal5-LCDAxeCodeur[%1]").arg(i))) == NULL )
+		{
+			std::cerr << "SupervCLIMSO: ERREUR: Impossible de creer le widget QLCDNumber:LCDAxeCodeur[" << i << "] de la boite de rangement horizontal 5 de la fenetre principale." << std::endl;
+		}
+		LCDAxeCodeur[i]->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+		LCDAxeCodeur[i]->setFixedSize(TAILLE_X_LCD_AXECODEUR,TAILLE_Y_LCD_AXECODEUR);
+		LCDAxeCodeur[i]->setSegmentStyle(QLCDNumber::Flat);
+		LCDAxeCodeur[i]->display("");
+
+		switch( i )
+		{
 			case AXE_PLATINE_X:
+				LCDAxeCodeur[i]->setNumDigits(8);
+				LCDAxeCodeur[i]->setFixedSize(TAILLE_X_LCD_AXECODEUR_PLATINE,TAILLE_Y_LCD_AXECODEUR);
 				QToolTip::add(LCDAxeCodeur[i],QString::fromLocal8Bit("Position de la platine X en incréments quadrature codeur"));
 
 				// Creation du widget d'entree SpinBox de la consigne de decalage en x de C2
 				//
-				if( (SpinBoxDeltaXC2=new (std::nothrow) QSpinBox(MIN_DELTA_X_C2,MAX_DELTA_X_C2,1,BoiteRangementHorizontal5,"SupervCLIMSO-BoiteRangementHorizontal5-SpinBoxDeltaXC2")) == NULL )
+				if( (SpinBoxDeltaXC2=new (std::nothrow) QSpinBox(VALMIN_DELTA_X_C2,VALMAX_DELTA_X_C2,VALINC_DELTA_X_C2,BoiteRangementHorizontal5,"SupervCLIMSO-BoiteRangementHorizontal5-SpinBoxDeltaXC2")) == NULL )
 				{
 					std::cerr << "SupervCLIMSO: ERREUR: Impossible de creer le widget QSpinBox:SpinBoxDeltaXC2 de la boite de rangement horizontal 5 de la fenetre principale." << std::endl;
 				}
-				SpinBoxDeltaXC2->setPrefix("dX ");
+				SpinBoxDeltaXC2->setPrefix("pX ");
 				SpinBoxDeltaXC2->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
-				SpinBoxDeltaXC2->setFixedSize(TAILLE_X_SPINBOX_AXECODEUR,TAILLE_Y_SPINBOX_AXECODEUR);
+				SpinBoxDeltaXC2->setFixedSize(TAILLE_X_SPINBOX_AXECODEUR_PLATINE,TAILLE_Y_SPINBOX_AXECODEUR);
 				SpinBoxDeltaXC2->setMinValue(VALMIN_DELTA_X_C2);
 				SpinBoxDeltaXC2->setMaxValue(VALMAX_DELTA_X_C2);
+				SpinBoxDeltaXC2->setLineStep(VALINC_DELTA_X_C2);
 				SpinBoxDeltaXC2->setValue(0);
 				SpinBoxDeltaXC2->setEnabled(false);
 				QToolTip::add(SpinBoxDeltaXC2,QString::fromLocal8Bit("Changer le décalage angulaire sur l'ascension droite entre C1 et C2"));
 				break;
 
 			case AXE_PLATINE_Y:
+				LCDAxeCodeur[i]->setNumDigits(8);
+				LCDAxeCodeur[i]->setFixedSize(TAILLE_X_LCD_AXECODEUR_PLATINE,TAILLE_Y_LCD_AXECODEUR);
 				QToolTip::add(LCDAxeCodeur[i],QString::fromLocal8Bit("Position de la platine Y en incréments quadrature codeur"));
 
 				// Creation du widget d'entree SpinBox de la consigne de decalage en y de C2
 				//
-				if( (SpinBoxDeltaYC2=new (std::nothrow) QSpinBox(MIN_DELTA_Y_C2,MAX_DELTA_Y_C2,1,BoiteRangementHorizontal5,"SupervCLIMSO-BoiteRangementHorizontal5-SpinBoxDeltaYC2")) == NULL )
+				if( (SpinBoxDeltaYC2=new (std::nothrow) QSpinBox(VALMIN_DELTA_Y_C2,VALMAX_DELTA_Y_C2,VALINC_DELTA_Y_C2,BoiteRangementHorizontal5,"SupervCLIMSO-BoiteRangementHorizontal5-SpinBoxDeltaYC2")) == NULL )
 				{
 					std::cerr << "SupervCLIMSO: ERREUR: Impossible de creer le widget QSpinBox:SpinBoxDeltaYC2 de la boite de rangement horizontal 5 de la fenetre principale." << std::endl;
 				}
-				SpinBoxDeltaYC2->setPrefix("dY ");
+				SpinBoxDeltaYC2->setPrefix("pY ");
 				SpinBoxDeltaYC2->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
-				SpinBoxDeltaYC2->setFixedSize(TAILLE_X_SPINBOX_AXECODEUR,TAILLE_Y_SPINBOX_AXECODEUR);
+				SpinBoxDeltaYC2->setFixedSize(TAILLE_X_SPINBOX_AXECODEUR_PLATINE,TAILLE_Y_SPINBOX_AXECODEUR);
 				SpinBoxDeltaYC2->setMinValue(VALMIN_DELTA_Y_C2);
 				SpinBoxDeltaYC2->setMaxValue(VALMAX_DELTA_Y_C2);
+				SpinBoxDeltaYC2->setLineStep(VALINC_DELTA_Y_C2);
 				SpinBoxDeltaYC2->setValue(0);
 				SpinBoxDeltaYC2->setEnabled(false);
 				QToolTip::add(SpinBoxDeltaYC2,QString::fromLocal8Bit("Changer le décalage angulaire sur la déclinaison entre C1 et C2"));
 				break;
 		}
+
+		// Le label nom de l'axe
+		//
+		if( (LabelAxe[i]=new (std::nothrow) QLabel(BoiteRangementHorizontal5,QString("SupervCLIMSO-BoiteRangementHorizontal5-LabelAxe[%1]").arg(i))) == NULL )
+		{
+			std::cerr << "SupervCLIMSO: ERREUR: Impossible de creer le widget QLabel:LabelAxe[" << i << "] de la boite de rangement horizontal 5 de la fenetre principale." << std::endl;
+		}
+		LabelAxe[i]->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+		LabelAxe[i]->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+		switch( i )
+		{
+			case AXE_PLATINE_X:
+				LabelAxe[i]->setFixedSize(TAILLE_X_LABEL_AXECODEUR_PLATINE,TAILLE_Y_LABEL_AXECODEUR);
+				LabelAxe[i]->setText("X  ");
+				break;
+			case AXE_PLATINE_Y:
+				LabelAxe[i]->setFixedSize(TAILLE_X_LABEL_AXECODEUR_PLATINE,TAILLE_Y_LABEL_AXECODEUR);
+				LabelAxe[i]->setText("Y  ");
+				break;
+		}
+
 	}
 
 
@@ -1372,6 +1412,11 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 		QToolTip::add(CBCompoSeqAcq[i],QString::fromLocal8Bit("Ajouter ce type de pose dans la liste des acquisitions"));
 	}
 
+	// On invalide certaines expositions dans la liste de la serie des aquisitions
+	//
+	CBCompoSeqAcq[ACQUISITION_C2_10747]->setChecked(false);
+	CBCompoSeqAcq[ACQUISITION_C2_10770]->setChecked(false);
+	CBCompoSeqAcq[ACQUISITION_C2_10798]->setChecked(false);
 	CBCompoSeqAcq[ACQUISITION_L1_COUR]->setChecked(false);
 	CBCompoSeqAcq[ACQUISITION_L2_COUR]->setChecked(false);
 
@@ -2872,6 +2917,8 @@ void SupervCLIMSO::closeEvent(QCloseEvent *e)
 			//
 			DemandeRotationRoueOuverture(ModeRO_PLU);
 			DemandeRotationRoueFiltresC2(FiltreC2_10830);
+			DemandeMouvementXPlatine(POSITION_REPOS_ARRET_CLIMSO_PLATINE);
+			DemandeMouvementYPlatine(POSITION_REPOS_ARRET_CLIMSO_PLATINE);
 
 			Log("RobOA: Axes aux positions de repos.");
 
@@ -2893,9 +2940,15 @@ void SupervCLIMSO::closeEvent(QCloseEvent *e)
 			// On attend un petit moment pour que les ordres soient envoyes
 			//
 			debut=time(NULL);
-			while( (time(NULL)-debut) < (TEMPS_ATTENTE_CONN_ARRET_SUPERVCLIMSO/2) ) appli->processEvents();
+			while( (time(NULL)-debut) < (TEMPS_ATTENTE_CONN_ARRET_SUPERVCLIMSO*2) ) appli->processEvents();
 
-			// On peut envoyer le signal d'arret des machines
+
+			// Arret du QTimer puisqu'il ne pourra pas rafraichir les positions et le widget apres la demande d'arret du superviseur
+			//
+			Pulsar1s->stop();
+
+
+			// On peut envoyer le signal d'ARRET des machines
 			//
 			for( i=0; i < NB_CAMEROA; i++ )
 			{
@@ -3294,10 +3347,17 @@ void SupervCLIMSO::SlotPulsar1s(void)
 			//
 			DemandeRotationRoueFiltresC2(FiltreC2_10830);
 
-			// On permet les widgets de controle des axes
+			// On permet les widgets de controle des axes X et Y de la platine
 			//
+			SpinBoxDeltaXC2->setValue(POSITION_X_DEMARRAGE_CLIMSO_PLATINE); // XXX Ajouté en 2010
 			SpinBoxDeltaXC2->setEnabled(true);
+			SpinBoxDeltaYC2->setValue(POSITION_Y_DEMARRAGE_CLIMSO_PLATINE); // XXX Ajouté en 2010
 			SpinBoxDeltaYC2->setEnabled(true);
+
+			// Demande de deplacement de la platine X et Y a la position probable de demarrage des observations le matin
+			//
+			DemandeMouvementXPlatine(POSITION_X_DEMARRAGE_CLIMSO_PLATINE); // XXX Ajouté en 2010
+			DemandeMouvementYPlatine(POSITION_Y_DEMARRAGE_CLIMSO_PLATINE); // XXX Ajouté en 2010
 		}
 	}
 
@@ -3436,8 +3496,17 @@ void SupervCLIMSO::SlotPulsar1s(void)
 	}
 
 
-	// Si on doit declancher des acquisitions automatiques
+	// Si on doit declancher des acquisitions automatiques toutes les 20 secondes
 	//
+switch( DateHeureUT.time().second() )
+{
+case 0:
+case 1:
+case 20:
+case 21:
+case 40:
+case 41:
+
 	if( C1Actif ) if( !PoseEnCours[CAMEROA_C1] ) if( CBAcqAuto[CAMEROA_C1]->isChecked() ) if( ModeObservation != ModeRO_SansMode && (CBCompoSeqAcq[ACQUISITION_C1_COUR]->isChecked()) )
 	{
 		aLoguer=true;
@@ -3506,6 +3575,9 @@ void SupervCLIMSO::SlotPulsar1s(void)
 
 		MAJEtatBoutonsFP();
 	}
+break;
+}
+
 }
 
 
@@ -6567,8 +6639,8 @@ void SupervCLIMSO::customEvent(QCustomEvent *ce)
 		//
 		LCDAxeCodeur[AXE_ROUE_OUVERTURE]->display(event->Valeur(AXE_ROUE_OUVERTURE));
 		LCDAxeCodeur[AXE_ROUE_FILTREC2]->display(event->Valeur(AXE_ROUE_FILTREC2));
-		LCDAxeCodeur[AXE_PLATINE_X]->display(event->Valeur(AXE_PLATINE_X));
-		LCDAxeCodeur[AXE_PLATINE_Y]->display(event->Valeur(AXE_PLATINE_Y));
+		LCDAxeCodeur[AXE_PLATINE_X]->display(event->Valeur(AXE_PLATINE_X)/RapportMicroPasCodeurPlatine); // XXX Ajouté en 2010
+		LCDAxeCodeur[AXE_PLATINE_Y]->display(event->Valeur(AXE_PLATINE_Y)/RapportMicroPasCodeurPlatine); // XXX Ajouté en 2010
 
 		// Mise a jour du graphique de la roue d'ouverture
 		//
@@ -6649,33 +6721,54 @@ void SupervCLIMSO::customEvent(QCustomEvent *ce)
 
 		// Si on est en mode Observation et qu'il s'agit d'une image lumiere d'observation, l'image est diffusable sur BASS2000
 		//
-		if( (ModeObservation == ModeRO_Observation) && (PLDonneesCamerOA[event->Identifieur()]->EnTeteI.type_image == TYPE_IMG_CAMEROA_POSEI) )
+		if( (PLDonneesCamerOA[event->Identifieur()]->EnTeteI.type_image == TYPE_IMG_CAMEROA_POSEI) )
 		{
-			switch( event->Identifieur() )
+			if( ModeObservation == ModeRO_Observation )
 			{
-				case CAMEROA_C1:
-					FichiersPubliC1[NbImgPubliablesC1 % NB_IMG_PUB_C1]=NomCompletFichier;
-					NbImgPubliablesC1++;
-					if( FenetrePubliC1->isVisible() ) ComposerListePubliablesC1();
-					break;
+				switch( event->Identifieur() )
+				{
+					case CAMEROA_C1:
+						FichiersPubliC1[NbImgPubliablesC1 % NB_IMG_PUB_C1]=NomCompletFichier;
+						NbImgPubliablesC1++;
+						if( FenetrePubliC1->isVisible() ) ComposerListePubliablesC1();
+						break;
 
-				case CAMEROA_C2:
-					FichiersPubliC2[NbImgPubliablesC2 % NB_IMG_PUB_C2]=NomCompletFichier;
-					NbImgPubliablesC2++;
-					if( FenetrePubliC2->isVisible() ) ComposerListePubliablesC2();
-					break;
+					case CAMEROA_C2:
+						FichiersPubliC2[NbImgPubliablesC2 % NB_IMG_PUB_C2]=NomCompletFichier;
+						NbImgPubliablesC2++;
+						if( FenetrePubliC2->isVisible() ) ComposerListePubliablesC2();
+						break;
 
-				case CAMEROA_L1:
-					FichiersPubliL1[NbImgPubliablesL1 % NB_IMG_PUB_L1]=NomCompletFichier;
-					NbImgPubliablesL1++;
-					if( FenetrePubliL1->isVisible() ) ComposerListePubliablesL1();
-					break;
+					case CAMEROA_L1:
+						FichiersPubliL1[NbImgPubliablesL1 % NB_IMG_PUB_L1]=NomCompletFichier;
+						NbImgPubliablesL1++;
+						if( FenetrePubliL1->isVisible() ) ComposerListePubliablesL1();
+						break;
 
-				case CAMEROA_L2:
-					FichiersPubliL2[NbImgPubliablesL2 % NB_IMG_PUB_L2]=NomCompletFichier;
-					NbImgPubliablesL2++;
-					if( FenetrePubliL2->isVisible() ) ComposerListePubliablesL2();
-					break;
+					case CAMEROA_L2:
+						FichiersPubliL2[NbImgPubliablesL2 % NB_IMG_PUB_L2]=NomCompletFichier;
+						NbImgPubliablesL2++;
+						if( FenetrePubliL2->isVisible() ) ComposerListePubliablesL2();
+						break;
+				}
+			}
+
+			if( ModeObservation == ModeRO_Pointage )
+			{
+				switch( event->Identifieur() )
+				{
+					case CAMEROA_L1:
+						FichiersPubliL1[NbImgPubliablesL1 % NB_IMG_PUB_L1]=NomCompletFichier;
+						NbImgPubliablesL1++;
+						if( FenetrePubliL1->isVisible() ) ComposerListePubliablesL1();
+						break;
+
+					case CAMEROA_L2:
+						FichiersPubliL2[NbImgPubliablesL2 % NB_IMG_PUB_L2]=NomCompletFichier;
+						NbImgPubliablesL2++;
+						if( FenetrePubliL2->isVisible() ) ComposerListePubliablesL2();
+						break;
+				}
 			}
 		}
 
@@ -7314,7 +7407,21 @@ int SupervCLIMSO::SauverImageFITS(int n,QString &ncf)
 	switch( PLDonneesCamerOA[n]->EnTeteI.type_image )
 	{
 		case TYPE_IMG_CAMEROA_POSEI:
-			if( ModeObservation == ModeRO_Pointage) NomFichier+="_po.fts";
+			if( ModeObservation == ModeRO_Pointage)
+			{
+				switch( n )
+				{
+					case CAMEROA_C1:
+					case CAMEROA_C2:
+						NomFichier+="_po.fts";
+						break;
+
+					case CAMEROA_L1:
+					case CAMEROA_L2:
+						NomFichier+="_b1.fts";
+						break;
+				}
+			}
 			if( ModeObservation == ModeRO_Calibration) NomFichier+="_ca.fts";
 			if( ModeObservation == ModeRO_PLU ) NomFichier+="_pl.fts";
 			if( ModeObservation == ModeRO_Observation ) NomFichier+="_b1.fts";
@@ -7629,7 +7736,7 @@ int SupervCLIMSO::SauverImageFITS(int n,QString &ncf)
 
 	// Si il s'agit d'une pose d'observation
 	//
-	if( (PLDonneesCamerOA[n]->EnTeteI.type_image == TYPE_IMG_CAMEROA_POSEI) && (ModeObservation == ModeRO_Observation) )
+	if( (PLDonneesCamerOA[n]->EnTeteI.type_image == TYPE_IMG_CAMEROA_POSEI) && (ModeObservation == ModeRO_Observation || ModeObservation == ModeRO_Pointage) )
 	{
 		// L'objet observe
 		//
@@ -7637,12 +7744,15 @@ int SupervCLIMSO::SauverImageFITS(int n,QString &ncf)
 		{
 			case CAMEROA_C1:
 			case CAMEROA_C2:
-				if( fits_write_key(Id,TSTRING,(char *) "OBJECT",(char *) "COR",(char *) "Sun corona observation",&status) )
+				if( ModeObservation == ModeRO_Observation )
 				{
-					fits_get_errstatus(status,ceFITS);
-					fits_close_file(Id,&status);
-					Log("*** ERREUR FITS:"+QString(ceFITS)+": SupervCLIMSO: SauverImageFITS(): Impossible d'ajouter le mot clé de l'objet observé dans le fichier:"+NomFichierComplet+" ***");
-					return false;
+					if( fits_write_key(Id,TSTRING,(char *) "OBJECT",(char *) "COR",(char *) "Sun corona observation",&status) )
+					{
+						fits_get_errstatus(status,ceFITS);
+						fits_close_file(Id,&status);
+						Log("*** ERREUR FITS:"+QString(ceFITS)+": SupervCLIMSO: SauverImageFITS(): Impossible d'ajouter le mot clé de l'objet observé dans le fichier:"+NomFichierComplet+" ***");
+						return false;
+					}
 				}
 				break;
 
@@ -10819,7 +10929,10 @@ void ProcessusLegerClientTemperatures::run()
 
 								// Si une sonde PT n'est pas branchee
 								//
-								if( sc[0] == QChar('-') )
+
+//std::cout << sc << std::endl;
+
+								if( sc[0] == QChar('-') && sc[1] == QChar('-') )
 								{
 									T[i]=TEMPERATURE_NON_CONNUE;
 								}
