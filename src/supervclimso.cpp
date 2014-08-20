@@ -1662,13 +1662,13 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	connect(CBCompoSeqAcq[ACQUISITION_L2_COUR],SIGNAL(pressed()),this,SLOT(SlotCBCompoSeqAcqL2C()));
 
 	// XXX On désactive certains éléments pour ne pas affecter la roue à filtre
-	Bouton10798->setEnabled(false);
-	Bouton10770->setEnabled(false);
-	Bouton10747->setEnabled(false);
+	//Bouton10798->setEnabled(false);
+	//Bouton10770->setEnabled(false);
+	//Bouton10747->setEnabled(false);
 	
 	// XXX On désactive les platines X et Y
-	SpinBoxDeltaXC2->setEnabled(false);
-	SpinBoxDeltaYC2->setEnabled(false);
+	//SpinBoxDeltaXC2->setEnabled(false);
+	//SpinBoxDeltaYC2->setEnabled(false);
 
 	// Demarrage du timer
 	//
@@ -3294,7 +3294,7 @@ void SupervCLIMSO::SlotPulsar1s(void)
 
 		// Si on vient de trouver l'index de la roue a filtre de C2 et que l'on a deja trouve l'index de la roue d'ouverture
 		//
-		// XXX A commenter pour la recherche roue
+		// XXX A commenter pour la recherche roue à filtre
 
 		AxeIndexTrouve[AXE_ROUE_FILTREC2]=true;
 		aFiltreC2=FiltreC2_NonInitialise;
@@ -3305,10 +3305,11 @@ void SupervCLIMSO::SlotPulsar1s(void)
 		{
 			// Le filtre actif n'est pas pas connu pour l'instant
 			//
+/*
 			aFiltreC2=FiltreC2_NonInitialise;
 			FiltreC2=FiltreC2_SansFiltre;
 // XXX A reactiver pour la la recherche roue à filtres
-/*
+
 			AxeRechIndexEnCours=AXE_PLATINE_X;
 			PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_PLATINE_X);
 
@@ -9031,7 +9032,7 @@ void ProcessusLegerClientCommandeRobOA::run()
 									}
 									i++;
 								}
-//std::cout << "Ligne recue propre:" << Ligne << std::endl;
+								std::cout << "Ligne recue propre:" << Ligne << std::endl;
 
 								// Analyse de la ligne recue du serveur RobOA, recherche du retour de commande
 								//
@@ -10035,7 +10036,7 @@ void ProcessusLegerClientDonneesCamerOA::run()
 											case TRAME_CENTRAGE_H:
 												MutexTrameImageCH.lock();
 
-												if( EnTeteICH.tx != EnTeteTrame.tx || EnTeteICH.ty != EnTeteTrame.ty ) TrameICH.resize(ttramep);
+												if( EnTeteICH.tx != EnTeteTrame.tx || EnTeteICH.ty != EnTeteTrame.ty ) TrameICH.resize(ttramep); // FIXME resize provoque segfault
 
 												EnTeteICH=EnTeteTrame;
 
