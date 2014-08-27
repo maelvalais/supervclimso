@@ -4,4 +4,7 @@ Le système CLIMSO est composé de 3 autres programmes : [`cameroa`](https://git
 
 J'ai mis en ligne ces versions en retirant toute partie posant problème (certificats SSL, adresses privées internes, ports...). J'espère aussi que David Romeuf ne m'en voudra pas d'avoir copié son travail sur un espace de développement public, qui permettra peut-être de simplifier la maintenance de ce logiciel complexe.
 
+Voici un schéma récapitulatif des quatre programmes (crédit : David Romeuf, 2007) :
+![Description logicielle du système CLIMSO](http://www.climso.fr/images/projet/CLIMSO-DescriptionSchematique-ProcessusCommunications-800l.jpg)
+
 Maël VALAIS
