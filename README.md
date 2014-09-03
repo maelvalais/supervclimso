@@ -30,7 +30,7 @@ L'exécutable créé est `supervclimso/src/supervclimso`. Il faudra copier cet e
 
 # Installer et lancer `supervclimso`
 
-Il faut récupérer [l'archive du dossier `/SupervCLIMSO`](https://dl.dropboxusercontent.com/u/41771140/climso/CamerOA-3.zip) à mettre à la racine du système et appliquer les droits appropriés. Le dossier `/SupervCLIMSO` doit comprendre au moins :
+Il faut récupérer [l'archive du dossier `/SupervCLIMSO`](https://dl.dropboxusercontent.com/u/41771140/climso/SupervCLIMSO.zip) à mettre à la racine du système et appliquer les droits appropriés. Le dossier `/SupervCLIMSO` doit comprendre au moins :
 
 - `lancement-supervclimso`
 - le dossier `ssl/` (avec 3 fichiers .pem dedans)
