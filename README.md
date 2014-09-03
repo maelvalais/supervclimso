@@ -10,7 +10,7 @@ Note: J'ai mis en ligne ces sources en retirant toute partie posant problème (c
 
 ## Installer les librairies nécessaires
 
-  yum install gcc gcc-c++ qt3 qt3-devel kdelibs3 kdelibs3-devel autoconf automake libtool cfitsio cfitsio-devel
+	yum install gcc gcc-c++ qt3 qt3-devel kdelibs3 kdelibs3-devel autoconf automake libtool cfitsio cfitsio-devel
 
 Et aussi éventuellement `git` pour récupérer les sources depuis le dépôt (il est aussi possible de télécharger un .zip directement) :
 
