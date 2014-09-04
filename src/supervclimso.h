@@ -239,6 +239,7 @@
 #define POSITION_Y_DEMARRAGE_CLIMSO_PLATINE	0
 
 
+#define TAILLE_X_BOUTONS_SUPPR_ET_BASS	80
 // Les images publiables sur BASS2000
 //
 #define NB_IMG_PUB_C1	4

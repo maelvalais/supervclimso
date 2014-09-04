@@ -1313,6 +1313,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonPosesBias->setPixmap(QPixmap(IconPosesBias_xpm));
 	BoutonPosesBias->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonPosesBias->setFixedWidth(138);
 	QToolTip::add(BoutonPosesBias,QString::fromLocal8Bit("Déclencher des poses de type image de base (signal d'offset) sur TOUS LES INSTRUMENTS de CLIMSO"));
 
 	// Bouton de demande de poses Dark
@@ -1323,6 +1324,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonPosesDark->setPixmap(QPixmap(IconPosesDark_xpm));
 	BoutonPosesDark->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonPosesDark->setFixedWidth(138);
 	QToolTip::add(BoutonPosesDark,QString::fromLocal8Bit("Déclencher des poses de type courant d'obscurité (DARK) sur TOUS LES INSTRUMENTS de CLIMSO"));
 
 	// Bouton de demande de sequence de poses images
@@ -1333,6 +1335,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonSequencePosesImages->setPixmap(QPixmap(IconAcquisitionsPosesImages_xpm));
 	BoutonSequencePosesImages->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonSequencePosesImages->setFixedWidth(270);
 	QToolTip::add(BoutonSequencePosesImages,QString::fromLocal8Bit("Déclencher des poses de type PLU ou liste d'acquisitons d'images (selon la position roue d'ouverture) sur TOUS LES INSTRUMENTS de CLIMSO"));
 
 
@@ -1450,6 +1453,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonSuppressionDerImgC1->setPixmap(QPixmap(IconSupprDerImgC1_xpm));
 	BoutonSuppressionDerImgC1->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonSuppressionDerImgC1->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonSuppressionDerImgC1->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonSuppressionDerImgC1,QString::fromLocal8Bit("Supprimer la dernière image acquise avec C1"));
 
@@ -1473,6 +1477,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 		std::cerr << "SupervCLIMSO: ERREUR: Impossible de creer le widget QPushButton:BoutonSuppressionDerImgC2 de la boite de rangement horizontal 8." << std::endl;
 	}
 	BoutonSuppressionDerImgC2->setPixmap(QPixmap(IconSupprDerImgC2_xpm));
+	BoutonSuppressionDerImgC2->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonSuppressionDerImgC2->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
 	BoutonSuppressionDerImgC2->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonSuppressionDerImgC2,QString::fromLocal8Bit("Supprimer la dernière image acquise avec C2"));
@@ -1498,6 +1503,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonSuppressionDerImgL1->setPixmap(QPixmap(IconSupprDerImgL1_xpm));
 	BoutonSuppressionDerImgL1->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonSuppressionDerImgL1->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonSuppressionDerImgL1->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonSuppressionDerImgL1,QString::fromLocal8Bit("Supprimer la dernière image acquise avec L1"));
 
@@ -1522,6 +1528,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonSuppressionDerImgL2->setPixmap(QPixmap(IconSupprDerImgL2_xpm));
 	BoutonSuppressionDerImgL2->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonSuppressionDerImgL2->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonSuppressionDerImgL2->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonSuppressionDerImgL2,QString::fromLocal8Bit("Supprimer la dernière image acquise avec L2"));
 
@@ -1533,6 +1540,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonTransfertBASS2000C1->setPixmap(QPixmap(IconTransfertBASS2000C1_xpm));
 	BoutonTransfertBASS2000C1->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonTransfertBASS2000C1->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonTransfertBASS2000C1->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonTransfertBASS2000C1,QString::fromLocal8Bit("Transférer et publier la dernière acquisition de C1 sur BASS2000"));
 
@@ -1544,6 +1552,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonTransfertBASS2000C2->setPixmap(QPixmap(IconTransfertBASS2000C2_xpm));
 	BoutonTransfertBASS2000C2->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonTransfertBASS2000C2->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonTransfertBASS2000C2->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonTransfertBASS2000C2,QString::fromLocal8Bit("Transférer et publier la dernière acquisition de C2 sur BASS2000"));
 
@@ -1555,6 +1564,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonTransfertBASS2000L1->setPixmap(QPixmap(IconTransfertBASS2000L1_xpm));
 	BoutonTransfertBASS2000L1->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonTransfertBASS2000L1->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonTransfertBASS2000L1->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonTransfertBASS2000L1,QString::fromLocal8Bit("Transférer et publier la dernière acquisition de L1 sur BASS2000"));
 
@@ -1566,6 +1576,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonTransfertBASS2000L2->setPixmap(QPixmap(IconTransfertBASS2000L2_xpm));
 	BoutonTransfertBASS2000L2->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonTransfertBASS2000L2->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonTransfertBASS2000L2->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonTransfertBASS2000L2,QString::fromLocal8Bit("Transférer et publier la dernière acquisition de L2 sur BASS2000"));
 
