@@ -2935,8 +2935,10 @@ void SupervCLIMSO::closeEvent(QCloseEvent *e)
 			//
 			DemandeRotationRoueOuverture(ModeRO_PLU);
 			DemandeRotationRoueFiltresC2(FiltreC2_10830);
-			DemandeMouvementXPlatine(POSITION_REPOS_ARRET_CLIMSO_PLATINE);
-			DemandeMouvementYPlatine(POSITION_REPOS_ARRET_CLIMSO_PLATINE);
+
+			// Désactivés car pertube le fonctionnement sans platines
+			//DemandeMouvementXPlatine(POSITION_REPOS_ARRET_CLIMSO_PLATINE);
+			//DemandeMouvementYPlatine(POSITION_REPOS_ARRET_CLIMSO_PLATINE);
 
 			Log("RobOA: Axes aux positions de repos.");
 
