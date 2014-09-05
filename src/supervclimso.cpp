@@ -3362,8 +3362,8 @@ void SupervCLIMSO::SlotPulsar1s(void)
 		//if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] && AxeIndexTrouve[AXE_ROUE_FILTREC2] && AxeIndexTrouve[AXE_PLATINE_X] && AxeIndexTrouve[AXE_PLATINE_Y] )
 		if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] ) // XXX à enlever pour réactiver les platines et la roue à filtres
 		{ // XXX Un ajout à cette condition a été fait en 2010
-			AxesInitialises=true;
 			if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] && AxeIndexTrouve[AXE_ROUE_FILTREC2]) {
+				AxesInitialises=true;
 				AxeRechIndexEnCours=AXE_NON_RECHERCHE;
 			}
 
@@ -3374,6 +3374,7 @@ void SupervCLIMSO::SlotPulsar1s(void)
 		if( AxeIndexTrouve[AXE_ROUE_FILTREC2] ) // Séparatation entre la roue à filtre et la roue d'ouverture
 		{
 			if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] && AxeIndexTrouve[AXE_ROUE_FILTREC2]) {
+				AxesInitialises=true;
 				AxeRechIndexEnCours=AXE_NON_RECHERCHE;
 			}
 			// On positionne la roue a filtre de C2 a la position par defaut
