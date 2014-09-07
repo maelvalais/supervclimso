@@ -47,3 +47,7 @@ Il suffit enfin de lancer en tappant `/SupervCLIMSO/lancement-supervclimso`.
 
 # Modifications apportées vis à vis du source d'origine
 Une [page du wiki](https://github.com/mael65/projet-climso/wiki/Ce-que-j%27ai-fait-pour-compiler-supervclimso) permet de comprendre quelles changements ont été faits pour rendre la compilation possible.
+
+# Aperçu de l'écran principal
+![Écran principal de l'application `supervclimso`. On peut voir les boutons de prise de vue des 4 caméras.](https://dl.dropboxusercontent.com/u/41771140/climso/ecran-supervclimso.jpg)
+
