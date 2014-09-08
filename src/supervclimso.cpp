@@ -3309,9 +3309,9 @@ void SupervCLIMSO::SlotPulsar1s(void)
 		//
 		// XXX A commenter pour la recherche roue à filtre
 
-		AxeIndexTrouve[AXE_ROUE_FILTREC2]=true;
-		aFiltreC2=FiltreC2_NonInitialise;
-		FiltreC2=FiltreC2_10830;
+//		AxeIndexTrouve[AXE_ROUE_FILTREC2]=true;
+//		aFiltreC2=FiltreC2_NonInitialise;
+//		FiltreC2=FiltreC2_10830;
 
 
 		if( AxeIndexTrouve[AXE_ROUE_FILTREC2] && (AxeRechIndexEnCours == AXE_ROUE_FILTREC2) )
@@ -3360,23 +3360,15 @@ void SupervCLIMSO::SlotPulsar1s(void)
 		// Si on a trouve tous les index
 		//
 		//if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] && AxeIndexTrouve[AXE_ROUE_FILTREC2] && AxeIndexTrouve[AXE_PLATINE_X] && AxeIndexTrouve[AXE_PLATINE_Y] )
-		if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] ) // XXX à enlever pour réactiver les platines et la roue à filtres
+		if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] && AxeIndexTrouve[AXE_ROUE_FILTREC2]) // XXX à enlever pour réactiver les platines et la roue à filtres
 		{ // XXX Un ajout à cette condition a été fait en 2010
-			if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] && AxeIndexTrouve[AXE_ROUE_FILTREC2]) {
-				AxesInitialises=true;
-				AxeRechIndexEnCours=AXE_NON_RECHERCHE;
-			}
+			AxesInitialises=true;
+			AxeRechIndexEnCours=AXE_NON_RECHERCHE;
 
 			// On positionne la roue d'ouverture a la position par defaut
 			//
 			DemandeRotationRoueOuverture(ModeRO_Pointage);
-		}
-		if( AxeIndexTrouve[AXE_ROUE_FILTREC2] ) // Séparatation entre la roue à filtre et la roue d'ouverture
-		{
-			if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] && AxeIndexTrouve[AXE_ROUE_FILTREC2]) {
-				AxesInitialises=true;
-				AxeRechIndexEnCours=AXE_NON_RECHERCHE;
-			}
+
 			// On positionne la roue a filtre de C2 a la position par defaut
 			//
 			DemandeRotationRoueFiltresC2(FiltreC2_10830);
@@ -7170,6 +7162,7 @@ void SupervCLIMSO::customEvent(QCustomEvent *ce)
 			case AXE_ROUE_OUVERTURE:
 			case AXE_ROUE_FILTREC2:
 				Log("-> Index du codeur de l'axe de "+Axe[event->Numero()]+" trouvé.");
+				// XXX On peut demander ici de mettre la roue à la bonne position !
 				break;
 
 			case AXE_PLATINE_X:
