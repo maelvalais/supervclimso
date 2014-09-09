@@ -5,7 +5,7 @@
   (C)David.Romeuf@univ-lyon1.fr 26/10/2006 par David Romeuf
 */
 
-#ifndef
+#ifndef VERSION_SANS_PLATINES
 #define VERSION_SANS_PLATINES true
 #endif
 
@@ -3303,6 +3303,7 @@ void SupervCLIMSO::SlotPulsar1s(void)
 			//
 			AxeRechIndexEnCours=AXE_ROUE_FILTREC2;
 			PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_ROUE_FILTREC2);
+			Log("Début de la recherche de l'index de l'axe de la Roue à Filtre C2.");
 
 			// Mise a jour des boutons
 			//
@@ -3329,6 +3330,7 @@ void SupervCLIMSO::SlotPulsar1s(void)
 #if not VERSION_SANS_PLATINES
 			AxeRechIndexEnCours=AXE_PLATINE_X;
 			PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_PLATINE_X);
+			Log("Début de la recherche de l'index de l'axe la platine X.");
 
 			// Mise a jour des boutons
 			//
@@ -3344,6 +3346,7 @@ void SupervCLIMSO::SlotPulsar1s(void)
 		{
 			AxeRechIndexEnCours=AXE_PLATINE_Y;
 			PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_PLATINE_Y);
+			Log("Début de la recherche de l'index de l'axe la platine Y.");
 
 			// Mise a jour des boutons
 			//
@@ -3644,6 +3647,8 @@ void SupervCLIMSO::SlotBoutonInitialisationAxes(void)
 	PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_ROUE_OUVERTURE);
 
 	Log("Début: Recherche des index et positions de repos des axes de CLIMSO.");
+	Log("Recherche de l'index de la Roue Ouverture.");
+
 
 	MAJEtatBoutonsFP();
 }
