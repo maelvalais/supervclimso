@@ -5,6 +5,10 @@
   (C)David.Romeuf@univ-lyon1.fr 26/10/2006 par David Romeuf
 */
 
+#ifndef VERSION_SANS_PLATINES
+#define VERSION_SANS_PLATINES true
+#endif
+
 // Inclusion C
 //
 #include <cfitsio/fitsio.h> // XXX L'instal standard de cfitsio par yum met les headers dans cfitsio/
@@ -628,7 +632,6 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	PaletteBoutonOrangee.setColor(QPalette::Active,QColorGroup::Midlight,QColor(255,180,0));	// Fond du bouton actif au survol souris
 	PaletteBoutonOrangee.setColor(QPalette::Inactive,QColorGroup::Button,QColor(219,155,0));	// Fond du bouton inactif au repos
 	PaletteBoutonOrangee.setColor(QPalette::Inactive,QColorGroup::Midlight,QColor(219,155,0));	// Fond du bouton inactif au survol souris
-
 
 	// Bouton de demande d'acces au tableau des consignes de CLIMSO
 	//
@@ -1314,6 +1317,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonPosesBias->setPixmap(QPixmap(IconPosesBias_xpm));
 	BoutonPosesBias->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonPosesBias->setFixedWidth(138);
 	QToolTip::add(BoutonPosesBias,QString::fromLocal8Bit("Déclencher des poses de type image de base (signal d'offset) sur TOUS LES INSTRUMENTS de CLIMSO"));
 
 	// Bouton de demande de poses Dark
@@ -1324,6 +1328,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonPosesDark->setPixmap(QPixmap(IconPosesDark_xpm));
 	BoutonPosesDark->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonPosesDark->setFixedWidth(138);
 	QToolTip::add(BoutonPosesDark,QString::fromLocal8Bit("Déclencher des poses de type courant d'obscurité (DARK) sur TOUS LES INSTRUMENTS de CLIMSO"));
 
 	// Bouton de demande de sequence de poses images
@@ -1334,6 +1339,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonSequencePosesImages->setPixmap(QPixmap(IconAcquisitionsPosesImages_xpm));
 	BoutonSequencePosesImages->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonSequencePosesImages->setFixedWidth(270);
 	QToolTip::add(BoutonSequencePosesImages,QString::fromLocal8Bit("Déclencher des poses de type PLU ou liste d'acquisitons d'images (selon la position roue d'ouverture) sur TOUS LES INSTRUMENTS de CLIMSO"));
 
 
@@ -1451,6 +1457,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonSuppressionDerImgC1->setPixmap(QPixmap(IconSupprDerImgC1_xpm));
 	BoutonSuppressionDerImgC1->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonSuppressionDerImgC1->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonSuppressionDerImgC1->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonSuppressionDerImgC1,QString::fromLocal8Bit("Supprimer la dernière image acquise avec C1"));
 
@@ -1474,6 +1481,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 		std::cerr << "SupervCLIMSO: ERREUR: Impossible de creer le widget QPushButton:BoutonSuppressionDerImgC2 de la boite de rangement horizontal 8." << std::endl;
 	}
 	BoutonSuppressionDerImgC2->setPixmap(QPixmap(IconSupprDerImgC2_xpm));
+	BoutonSuppressionDerImgC2->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonSuppressionDerImgC2->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
 	BoutonSuppressionDerImgC2->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonSuppressionDerImgC2,QString::fromLocal8Bit("Supprimer la dernière image acquise avec C2"));
@@ -1499,6 +1507,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonSuppressionDerImgL1->setPixmap(QPixmap(IconSupprDerImgL1_xpm));
 	BoutonSuppressionDerImgL1->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonSuppressionDerImgL1->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonSuppressionDerImgL1->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonSuppressionDerImgL1,QString::fromLocal8Bit("Supprimer la dernière image acquise avec L1"));
 
@@ -1523,6 +1532,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonSuppressionDerImgL2->setPixmap(QPixmap(IconSupprDerImgL2_xpm));
 	BoutonSuppressionDerImgL2->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonSuppressionDerImgL2->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonSuppressionDerImgL2->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonSuppressionDerImgL2,QString::fromLocal8Bit("Supprimer la dernière image acquise avec L2"));
 
@@ -1534,6 +1544,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonTransfertBASS2000C1->setPixmap(QPixmap(IconTransfertBASS2000C1_xpm));
 	BoutonTransfertBASS2000C1->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonTransfertBASS2000C1->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonTransfertBASS2000C1->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonTransfertBASS2000C1,QString::fromLocal8Bit("Transférer et publier la dernière acquisition de C1 sur BASS2000"));
 
@@ -1545,6 +1556,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonTransfertBASS2000C2->setPixmap(QPixmap(IconTransfertBASS2000C2_xpm));
 	BoutonTransfertBASS2000C2->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonTransfertBASS2000C2->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonTransfertBASS2000C2->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonTransfertBASS2000C2,QString::fromLocal8Bit("Transférer et publier la dernière acquisition de C2 sur BASS2000"));
 
@@ -1556,6 +1568,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonTransfertBASS2000L1->setPixmap(QPixmap(IconTransfertBASS2000L1_xpm));
 	BoutonTransfertBASS2000L1->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonTransfertBASS2000L1->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonTransfertBASS2000L1->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonTransfertBASS2000L1,QString::fromLocal8Bit("Transférer et publier la dernière acquisition de L1 sur BASS2000"));
 
@@ -1567,6 +1580,7 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	}
 	BoutonTransfertBASS2000L2->setPixmap(QPixmap(IconTransfertBASS2000L2_xpm));
 	BoutonTransfertBASS2000L2->setSizePolicy(QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed));
+	BoutonTransfertBASS2000L2->setFixedWidth(TAILLE_X_BOUTONS_SUPPR_ET_BASS);
 	BoutonTransfertBASS2000L2->setPalette(PaletteBoutonOrangee);
 	QToolTip::add(BoutonTransfertBASS2000L2,QString::fromLocal8Bit("Transférer et publier la dernière acquisition de L2 sur BASS2000"));
 
@@ -1662,7 +1676,15 @@ SupervCLIMSO::SupervCLIMSO(QString p_chemRepSuperviseur,KApplication *p_appli) :
 	connect(CBCompoSeqAcq[ACQUISITION_L2_SURF],SIGNAL(pressed()),this,SLOT(SlotCBCompoSeqAcqL2S()));
 	connect(CBCompoSeqAcq[ACQUISITION_L2_COUR],SIGNAL(pressed()),this,SLOT(SlotCBCompoSeqAcqL2C()));
 
+	// XXX On désactive certains éléments pour ne pas affecter la roue à filtre
+	//Bouton10798->setEnabled(false);
+	//Bouton10770->setEnabled(false);
+	//Bouton10747->setEnabled(false);
 	
+	// XXX On désactive les platines X et Y
+	//SpinBoxDeltaXC2->setEnabled(false);
+	//SpinBoxDeltaYC2->setEnabled(false);
+
 	// Demarrage du timer
 	//
 	Pulsar1s->start(1000,FALSE);
@@ -2917,9 +2939,11 @@ void SupervCLIMSO::closeEvent(QCloseEvent *e)
 			//
 			DemandeRotationRoueOuverture(ModeRO_PLU);
 			DemandeRotationRoueFiltresC2(FiltreC2_10830);
+#if not VERSION_SANS_PLATINES
+			// Désactivés car pertube le fonctionnement sans platines
 			DemandeMouvementXPlatine(POSITION_REPOS_ARRET_CLIMSO_PLATINE);
 			DemandeMouvementYPlatine(POSITION_REPOS_ARRET_CLIMSO_PLATINE);
-
+#endif
 			Log("RobOA: Axes aux positions de repos.");
 
 			// On peut envoyer aux CamerOA le retour a la temperature ambiante
@@ -3279,6 +3303,7 @@ void SupervCLIMSO::SlotPulsar1s(void)
 			//
 			AxeRechIndexEnCours=AXE_ROUE_FILTREC2;
 			PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_ROUE_FILTREC2);
+			Log("Début de la recherche de l'index de l'axe de la Roue à Filtre C2.");
 
 			// Mise a jour des boutons
 			//
@@ -3287,12 +3312,13 @@ void SupervCLIMSO::SlotPulsar1s(void)
 
 		// Si on vient de trouver l'index de la roue a filtre de C2 et que l'on a deja trouve l'index de la roue d'ouverture
 		//
-		// XXX A commenter pour la recherche roue
-/*
-		AxeIndexTrouve[AXE_ROUE_FILTREC2]=true;
-		aFiltreC2=FiltreC2_NonInitialise;
-		FiltreC2=FiltreC2_10830;
-*/
+		// XXX A commenter pour la recherche roue à filtre
+
+//		AxeIndexTrouve[AXE_ROUE_FILTREC2]=true;
+//		aFiltreC2=FiltreC2_NonInitialise;
+//		FiltreC2=FiltreC2_10830;
+
+
 		if( AxeIndexTrouve[AXE_ROUE_FILTREC2] && (AxeRechIndexEnCours == AXE_ROUE_FILTREC2) )
 		{
 			// Le filtre actif n'est pas pas connu pour l'instant
@@ -3300,41 +3326,51 @@ void SupervCLIMSO::SlotPulsar1s(void)
 			aFiltreC2=FiltreC2_NonInitialise;
 			FiltreC2=FiltreC2_SansFiltre;
 
-// XXX A reactiver pour la la recherche roue
+// XXX A reactiver pour la la recherche platine X
+#if not VERSION_SANS_PLATINES
 			AxeRechIndexEnCours=AXE_PLATINE_X;
 			PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_PLATINE_X);
+			Log("Début de la recherche de l'index de l'axe la platine X.");
 
 			// Mise a jour des boutons
 			//
 			MAJEtatBoutonsFP();
+#endif
 		}
 
 		// Si on vient de trouver la position HOME de l'axe X de la platine et que l'on a deja trouve l'index de la roue a filtre de C2
 		//
 // XXX A reactiver pour la recherche platine X
+#if not VERSION_SANS_PLATINES
 		if( AxeIndexTrouve[AXE_PLATINE_X] && (AxeRechIndexEnCours == AXE_PLATINE_X) )
 		{
 			AxeRechIndexEnCours=AXE_PLATINE_Y;
 			PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_PLATINE_Y);
+			Log("Début de la recherche de l'index de l'axe la platine Y.");
 
 			// Mise a jour des boutons
 			//
 			MAJEtatBoutonsFP();
 		}
-
+#endif
 // XXX A reactiver pour la recherche platine Y
 		// Si on vient de trouver la position HOME de l'axe Y de la platine et que l'on a deja trouve la position HOME de la platine X
 		//
+#if not VERSION_SANS_PLATINES
 		if( AxeIndexTrouve[AXE_PLATINE_Y] && (AxeRechIndexEnCours == AXE_PLATINE_Y) )
 		{
 			// Mise a jour des boutons
 			//
 			MAJEtatBoutonsFP();
 		}
-
+#endif
 		// Si on a trouve tous les index
 		//
+#if not VERSION_SANS_PLATINES
 		if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] && AxeIndexTrouve[AXE_ROUE_FILTREC2] && AxeIndexTrouve[AXE_PLATINE_X] && AxeIndexTrouve[AXE_PLATINE_Y] )
+#else
+		if( AxeIndexTrouve[AXE_ROUE_OUVERTURE] && AxeIndexTrouve[AXE_ROUE_FILTREC2]) // XXX à enlever pour réactiver les platines et la roue à filtres
+#endif
 		{ // XXX Un ajout à cette condition a été fait en 2010
 			AxesInitialises=true;
 			AxeRechIndexEnCours=AXE_NON_RECHERCHE;
@@ -3353,11 +3389,12 @@ void SupervCLIMSO::SlotPulsar1s(void)
 			SpinBoxDeltaXC2->setEnabled(true);
 			SpinBoxDeltaYC2->setValue(POSITION_Y_DEMARRAGE_CLIMSO_PLATINE); // XXX Ajouté en 2010
 			SpinBoxDeltaYC2->setEnabled(true);
-
+#if not VERSION_SANS_PLATINES
 			// Demande de deplacement de la platine X et Y a la position probable de demarrage des observations le matin
 			//
 			DemandeMouvementXPlatine(POSITION_X_DEMARRAGE_CLIMSO_PLATINE); // XXX Ajouté en 2010
 			DemandeMouvementYPlatine(POSITION_Y_DEMARRAGE_CLIMSO_PLATINE); // XXX Ajouté en 2010
+#endif
 		}
 	}
 
@@ -3611,6 +3648,8 @@ void SupervCLIMSO::SlotBoutonInitialisationAxes(void)
 	PLCommandeRobOA->DemandeRechercheIndexAxe(AXE_ROUE_OUVERTURE);
 
 	Log("Début: Recherche des index et positions de repos des axes de CLIMSO.");
+	Log("Recherche de l'index de la Roue Ouverture.");
+
 
 	MAJEtatBoutonsFP();
 }
@@ -7136,6 +7175,7 @@ void SupervCLIMSO::customEvent(QCustomEvent *ce)
 			case AXE_ROUE_OUVERTURE:
 			case AXE_ROUE_FILTREC2:
 				Log("-> Index du codeur de l'axe de "+Axe[event->Numero()]+" trouvé.");
+				// XXX On peut demander ici de mettre la roue à la bonne position !
 				break;
 
 			case AXE_PLATINE_X:

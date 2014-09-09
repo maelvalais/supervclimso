@@ -640,6 +640,11 @@ int main(int argc, char **argv)
 
 		FenetrePrincipale->MAJEtatBoutonsFP();
 		FenetrePrincipale->Log("SupervCLIMSO lancé.");
+#if VERSION_SANS_PLATINES
+		FenetrePrincipale->Log("Version SANS l'initialisation des platines X et Y.");
+#else
+		FenetrePrincipale->Log("Version AVEC l'initialisation des platines X et Y.");
+#endif
 
 
 		// Autorisation du rafraichissement des sondes de temperature
