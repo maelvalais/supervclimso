@@ -21,10 +21,17 @@ Il faut que la machine sur laquelle tourne `supervclimso` ait l'adresse `192.168
 
 # Compiler `supervclimso`
 
-On récupère les sources (en `.zip` ou grace à la commande `git clone git@github.com:mael65/supervclimso.git`). Depuis le dossier du projet `supervclimso/`, lancez les commandes :
+On récupère les sources (en `.zip` ou grace à la commande `git clone git@github.com:mael65/supervclimso.git`). On se place dans le dossier du projet `supervclimso/`. Tapez :
 
 	./configure
-	make
+
+Et ensuite, pour compiler __la version sans platines__ (c'est la version choisie par défaut) :
+
+    make
+
+Il est toujours possible de compiler __la version normale__ (qu'on a mis de côté pour le moment) :
+   
+    make CPPFLAGS="-D VERSION_SANS_PLATINES=0"
 
 L'exécutable créé est `supervclimso/src/supervclimso`. Il faudra copier cet exécutable dans l'étape suivante.
 
