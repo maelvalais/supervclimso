@@ -3389,11 +3389,12 @@ void SupervCLIMSO::SlotPulsar1s(void)
 			SpinBoxDeltaXC2->setEnabled(true);
 			SpinBoxDeltaYC2->setValue(POSITION_Y_DEMARRAGE_CLIMSO_PLATINE); // XXX Ajouté en 2010
 			SpinBoxDeltaYC2->setEnabled(true);
-
+#if not VERSION_SANS_PLATINES
 			// Demande de deplacement de la platine X et Y a la position probable de demarrage des observations le matin
 			//
 			DemandeMouvementXPlatine(POSITION_X_DEMARRAGE_CLIMSO_PLATINE); // XXX Ajouté en 2010
 			DemandeMouvementYPlatine(POSITION_Y_DEMARRAGE_CLIMSO_PLATINE); // XXX Ajouté en 2010
+#endif
 		}
 	}
 
